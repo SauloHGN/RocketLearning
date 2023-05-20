@@ -36,14 +36,14 @@
         <ul class="nav-links">
 
             <li>
-                <a href="#">
+                <a a asp-controller="Home" asp-action="PaginaInicial">
                     <i class="sidebar-icons">
                         <img src="~/Resources/icons8-home-page-24.png" alt="home-image" class="home-image">
                     </i>
                     <span class="link_name">Página Inicial</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Página Inicial</a></li>
+                    <li><a a asp-controller="Home" asp-action="PaginaInicial" class="link_name" >Página Inicial</a></li>
                 </ul>
             </li>
 
@@ -119,17 +119,14 @@
                 </ul>
             </li>
             <li>
-
-                <a href="#">
+                
+                <a a asp-controller="Perfil" asp-action="Perfil">
                     <div class="profile-details">
                         <div class="profile-content">
                             <img src="http://unsplash.it/36/36?gravity=center" alt="profileImg">
                         </div>
-                </a>
-                <div class="name-job">
-                    <div class="profile_name">Nome Teste</div>
-                    <div class="job">Programador</div>
-                </div>
+                </a>           
+
                 <i class='bx bx-log-out'></i>
     </div>
     </li>

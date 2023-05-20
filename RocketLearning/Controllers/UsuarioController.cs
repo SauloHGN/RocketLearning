@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RocketLearning.Models;
 using System;
 using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,11 +12,27 @@ namespace RocketLearning.Controllers
 {
     public class UsuarioController : Controller
     {
+        public static int? IdUserAtual { get; set; }
+
         private readonly DataContext _context;
 
         public UsuarioController(DataContext context)
         {
             _context = context;
+        }
+
+        public Usuarios ObterUsuario(int idUsuario)
+        {
+            var usuario = _context.Set<Usuarios>().FirstOrDefault(u => u.Id == idUsuario);
+            if (usuario == null)
+            {
+                string nome = usuario.Nome;
+                string email = usuario.Email;
+                string telefone = usuario.Telefone;
+
+                return usuario;
+            }
+            throw new Exception("Usuário não encontrado");
         }
 
         public IActionResult Cadastrar()
@@ -84,16 +102,19 @@ namespace RocketLearning.Controllers
             Debug.WriteLine("Email: " + email);
             Debug.WriteLine("Senha: " + senha);
 
+            // Consultar o banco de dados para encontrar um usuário com o email e senha fornecidos
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Email != null && u.Email == email);
 
-            // Consultar o banco de dados para encontrar um usuário com o email e senha fornecidos      
-            var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == email && u.Senha == senha);
             if (usuario != null)
-            {
-                Debug.WriteLine("VERIFICAÇÃO 01 PASSOU");
+            {              
+
                 bool senhaCorreta = VerificarSenha(senha, usuario.Senha);
                 
                 if (senhaCorreta)
                 {
+                    int idUsuario = usuario.Id;
+                    UsuarioController.IdUserAtual = usuario.Id;
+                    //ObterIdUsuario(idUsuario);                 
                     // Senha correta, redirecionar para a Pagina Inicia
                     return RedirectToAction("PaginaInicial", "Home");
                 }
@@ -104,13 +125,22 @@ namespace RocketLearning.Controllers
              return RedirectToAction("Index", "Home");     
         }
 
+        /*public  int ObterIdUsuario(int idUsuario)
+        {
+            int IdUserAtual = idUsuario;
+            // Lógica para obter o ID do usuário
+            Debug.WriteLine("ID de retorno = " + idUsuario);
+            return IdUserAtual; // Substitua pelo valor correto
+        }*/
+
         private bool VerificarSenha(string senha, string senhaCriptografada)
         {
             // Criptografa a senha, para comparar com a criptografia do banco de dados
             string senhaCriptografadaUsuario = CriptografarSenha(senha);
-            
+
             // Comparar as senhas criptografadas
-            return senhaCriptografada.Equals(senhaCriptografadaUsuario);
+            return StringComparer.OrdinalIgnoreCase.Equals(senhaCriptografada, senhaCriptografadaUsuario);
         }
+        // FIM LOGICA LOGIN
     }
 }

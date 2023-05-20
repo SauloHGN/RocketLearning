@@ -1,0 +1,469 @@
+﻿@{
+    ViewData["Title"] = "Perfil";
+
+
+    
+    
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <title>Editar Perfil</title>
+</head>
+<body>
+    <!-- inicio conteiner perfil -->
+    <div id="perfil-container">
+        <h1>Editar Perfil</h1>
+        <div class="box-primary">
+            <img class="image" src="http://unsplash.it/36/36?gravity=center" alt="perfil-photo" />
+            <a href="#" class="btn-add"> <img src="~/Resources/icons8-add-48.png" alt="add-icon"></a>
+        </div>
+
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" autocomplete="off" value="@Html.Raw(ViewBag.Nome)">
+        </div>
+        <div class="form-group">
+            <label for="email">E-mail:</label>
+            <input type="text" id="email" name="email" autocomplete="off" value="@Html.Raw(ViewBag.Email)">
+        </div>
+        <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input type="text" id="telefone" name="telefone" autocomplete="off" class="form-control" onkeypress="$(this).mask('(00) 00000-0009')" value="@Html.Raw(ViewBag.Telefone)">
+        </div>
+
+        <input type="submit" value="Editar">
+    </div>
+    <!-- final conteiner perfil -->
+    <!-- barra lateral -->
+    <div class="sidebar close">
+        <div class="logo-details">
+            <img src="~/Resources/novaLogo.png" alt="logo" class="imagem-logo">
+        </div>
+        <ul class="nav-links">
+
+            <li>
+                <a a asp-controller="Home" asp-action="PaginaInicial">
+                    <i class="sidebar-icons">
+                        <img src="~/Resources/icons8-home-page-24.png" alt="home-image" class="home-image">
+                    </i>
+                    <span class="link_name">Página Inicial</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a a asp-controller="Home" asp-action="PaginaInicial" class="link_name" >Página Inicial</a></li>
+                </ul>
+            </li>
+
+
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                        <i class="sidebar-icons">
+                            <img src="~/Resources/icons8-list-24.png" alt="categoria-image" class="categoria-image">
+                        </i>
+                        <span class="link_name">Categorias</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Categorias</a></li>
+                    <li><a href="#">Todos</a></li>
+                    <li><a href="#">Mais Vistos</a></li>
+                    <li><a href="#">Recentes</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="sidebar-icons">
+                        <img src="~/Resources/icons8-static-views-24.png" alt="meusVideos-image" class="meusVideos-image">
+                    </i>
+                    <span class="link_name">Meus Vídeos</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Meus Vídeos</a></li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a href="#">
+                    <i class="sidebar-icons">
+                        <img src="~/Resources/icons8-time-machine-24.png" alt="historico-image" class="historico-image">
+                    </i>
+                    <span class="link_name">Histórico</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Histórico</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="sidebar-icons">
+                        <img src="~/Resources/icons8-fazer-upload-24.png" alt="config-image" class="config-image">
+                    </i>
+
+
+                    <span class="link_name">Upload</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Upload</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="sidebar-icons">
+                        <img src="~/Resources/icons8-settings-24.png" alt="config-image" class="config-image">
+                    </i>
+
+
+                    <span class="link_name">Configurações</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Configurações</a></li>
+                </ul>
+            </li>
+            <li>
+
+                <a href="#">
+                    <div class="profile-details">
+                        <div class="profile-content">
+                            <img src="http://unsplash.it/36/36?gravity=center" alt="profileImg">
+                        </div>
+                </a>
+               
+                <i class='bx bx-log-out'></i>
+    </div>
+    </li>
+    </ul>
+    </div>
+
+    <!-- fim barra lateral -->
+
+    <style>
+
+
+        /* inicio conteiner perfil */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Helvetica;
+            border: none;
+            color: #ececec;
+        }
+
+        body {
+            background-color: #292b2f;
+        }
+
+        .container {
+            margin: 0 auto;
+            display: table;
+        }
+
+        .image {
+            margin: 0 auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid gray;
+            display: inline-block;
+            padding: 3px;
+            border: 3px solid #d2d6de;
+            margin-top: 20px;
+            margin-left: 5vw;
+        }
+
+        #perfil-container {
+            background-color: #202225;
+            margin-left: auto;
+            margin-right: auto;
+            width: 600px;
+            padding: 20px 30px;
+            margin-top: 5vh;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 10px 40px #1b1b1b;
+            color: white;
+        }
+
+        input {
+            margin-left: auto;
+            margin-right: auto;
+            border-bottom: 3px solid #323232;
+            padding: 10px;
+            font-size: 1rem;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #202225;
+        }
+
+            textarea:focus, input:focus {
+                outline: none;
+            }
+
+            input:focus {
+                border-bottom: 3px solid #1eb9b9;
+            }
+
+            input[type="submit"] {
+                margin-left: 2vw;
+                text-align: center;
+                text-transform: uppercase;
+                border: none;
+                height: 40px;
+                border-radius: 20px;
+                margin-top: 30px;
+                cursor: pointer;
+                color: #1B223C;
+                background-color: #1eb9b9;
+                font-weight: bold;
+            }
+
+                input[type="submit"]:hover {
+                    background-color: #208888;
+                    transition: .5s;
+                }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="nome"],
+        .form-group input[type="telefone"] {
+            width: 250px;
+        }
+
+        /* final conteiner perfil */
+
+        /* inicio barra lateral sidebar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Helvetica, sans-serif;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 260px;
+            background: #202225;
+            z-index: 100;
+            transition: all 0.5s ease;
+        }
+
+            .sidebar.close {
+                width: 78px;
+            }
+
+        .imagem-logo {
+            height: 60%;
+            width: 60%;
+            margin-left: 1vw;
+            margin-top: 2.5vh;
+        }
+
+        .sidebar-icons {
+            margin-left: -2px;
+            margin-top: 5px;
+        }
+
+        .sidebar .nav-links {
+            height: 100%;
+            padding: 30px 0 150px 0;
+            overflow: auto;
+        }
+
+        .sidebar.close .nav-links {
+            overflow: visible;
+        }
+
+        .sidebar .nav-links::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar .nav-links li {
+            position: relative;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+            .sidebar .nav-links li:hover {
+                background: #1b1b1b;
+            }
+
+            .sidebar .nav-links li .iocn-link {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+        .sidebar.close .nav-links li .iocn-link {
+            display: block
+        }
+
+        .sidebar .nav-links li i {
+            height: 50px;
+            min-width: 78px;
+            text-align: center;
+            line-height: 50px;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .nav-links i.arrow {
+            display: none;
+        }
+
+        .sidebar .nav-links li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .sidebar.close .nav-links li a .link_name {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar .nav-links li .sub-menu {
+            padding: 6px 6px 14px 80px;
+            margin-top: -10px;
+            background: #1b1b1b;
+            display: none;
+        }
+
+        .sidebar .nav-links li.showMenu .sub-menu {
+            display: block;
+        }
+
+        .sidebar .nav-links li .sub-menu a {
+            color: #fff;
+            font-size: 15px;
+            padding: 5px 0;
+            white-space: nowrap;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+            .sidebar .nav-links li .sub-menu a:hover {
+                opacity: 1;
+            }
+
+        .sidebar.close .nav-links li .sub-menu {
+            position: absolute;
+            left: 100%;
+            top: -10px;
+            margin-top: 0;
+            padding: 10px 20px;
+            border-radius: 0 6px 6px 0;
+            opacity: 0;
+            display: block;
+            pointer-events: none;
+            transition: 0s;
+        }
+
+        .sidebar.close .nav-links li:hover .sub-menu {
+            top: 0;
+            opacity: 1;
+            pointer-events: auto;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar .nav-links li .sub-menu .link_name {
+            display: none;
+        }
+
+        .sidebar.close .nav-links li .sub-menu .link_name {
+            font-size: 18px;
+            opacity: 1;
+            display: block;
+        }
+
+        .sidebar .nav-links li .sub-menu.blank {
+            opacity: 1;
+            pointer-events: auto;
+            padding: 3px 20px 6px 16px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar .nav-links li:hover .sub-menu.blank {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .profile-details:hover .profile_name {
+            visibility: visible;
+        }
+
+        .sidebar .profile-details {
+            position: fixed;
+            bottom: 0;
+            width: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1b1b1b;
+            padding: 12px 0;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.close .profile-details {
+            background: none;
+        }
+
+        .sidebar .profile-details img {
+            height: 52px;
+            width: 52px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin: 0 14px 0 12px;
+            background: #1b1b1b;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.close .profile-details img {
+            padding: 10px;
+        }
+
+        .sidebar .profile-details .profile_name,
+        .sidebar .profile-details .job {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .sidebar.close .profile-details i,
+        .sidebar.close .profile-details .profile_name,
+        .sidebar.close .profile-details .job {
+            display: none;
+        }
+
+        .sidebar .profile-details.job {
+            font-size: 12px;
+        }
+
+        /* fim side bar */
+
+
+    </style>
+
+</body>
+</html>

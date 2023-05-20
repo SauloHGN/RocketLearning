@@ -28,6 +28,11 @@ namespace RocketLearning.Controllers
             return PartialView("PaginaInicial");//retorna tela da paginal inicial
         }
 
+        public IActionResult Perfil()
+        {         
+            return PartialView("Perfil");//retorna tela da paginal de perfil       
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
