@@ -33,6 +33,11 @@ namespace RocketLearning.Controllers
             return PartialView("Perfil");//retorna tela da paginal de perfil       
         }
 
+        public IActionResult RecuperarSenha()
+        {
+            return PartialView("RecuperarSenha");//retorna tela de Recuperar Senha      
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
