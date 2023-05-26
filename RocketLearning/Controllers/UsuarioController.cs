@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using RocketLearning.Models;
 using System;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
 using System.Text;
@@ -142,5 +144,91 @@ namespace RocketLearning.Controllers
             return StringComparer.OrdinalIgnoreCase.Equals(senhaCriptografada, senhaCriptografadaUsuario);
         }
         // FIM LOGICA LOGIN
+        public IActionResult EsqueciMinhaSenha()
+        {
+            string email = Request.Form["email"];
+
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Email != null && u.Email == email);
+
+            if (usuario != null)
+            {
+                string codigoRedefinicao = GerarCodigoRedefinicao();
+
+                usuario.Codigo = codigoRedefinicao;
+                _context.SaveChanges();
+                EnviarEmailRedefinicaoSenha(email, codigoRedefinicao);
+
+                ViewData["EmailContainerDisplay"] = "none";
+                ViewData["CodigoContainerDisplay"] = "block";
+                ViewData["RedefinirContainerDisplay"] = "none";
+                return View("~/Views/Home/RecuperarSenha.cshtml");
+            }
+            return View("~/Views/Home/RecuperarSenha.cshtml");
+        }
+
+        private string GerarCodigoRedefinicao()
+        {
+            Random random = new Random();
+            int codigo = random.Next(1000, 10000);
+
+            return codigo.ToString();
+        }
+
+        private void EnviarEmailRedefinicaoSenha(string emailDestinatario, string codigoRedefinicao)
+        {
+            string remetente = "SuporteRocketLearning@gmail.com";
+            string senhaRemetente = "xkmqzpgvkfvtfvzp";
+            string assunto = "Redefinição de senha";
+            string corpo = $"Seu código de redefinição de senha é: {codigoRedefinicao}";
+
+            MailMessage mensagem = new MailMessage(remetente, emailDestinatario, assunto, corpo);
+            SmtpClient clienteSmtp = new SmtpClient("smtp.gmail.com", 587);
+
+            clienteSmtp.Credentials = new NetworkCredential(remetente, senhaRemetente);
+            clienteSmtp.EnableSsl = true;
+
+            clienteSmtp.Send(mensagem);
+        }
+
+        public IActionResult VerificarCodigoRedefinicao(string email, string codigoDigitado)
+        {
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Email != null && u.Email == email);
+
+            if (usuario != null && usuario.Codigo == codigoDigitado)
+            {
+                ViewData["EmailContainerDisplay"] = "none";
+                ViewData["CodigoContainerDisplay"] = "none";
+                ViewData["RedefinirContainerDisplay"] = "block";
+                return View("~/Views/Home/RecuperarSenha.cshtml");
+            }
+            else
+            {
+                ViewData["EmailContainerDisplay"] = "none";
+                ViewData["CodigoContainerDisplay"] = "block";
+                ViewData["RedefinirContainerDisplay"] = "none";
+                return View("~/Views/Home/RecuperarSenha.cshtml");
+            }
+        }
+        public IActionResult AtualizarSenhaUsuario(string email, string novaSenha)
+        {
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Email != null && u.Email == email);
+
+            if (usuario != null)
+            {
+                string senhaCriptografada = CriptografarSenha(novaSenha);
+
+                usuario.Senha = senhaCriptografada;
+                _context.SaveChanges();
+
+                return View("~/Views/Home/ndex.cshtml");
+            }
+            else
+            {
+                ViewData["EmailContainerDisplay"] = "none";
+                ViewData["CodigoContainerDisplay"] = "none";
+                ViewData["RedefinirContainerDisplay"] = "block";
+                return View("~/Views/Home/RecuperarSenha.cshtml");
+            }
+        }
     }
 }

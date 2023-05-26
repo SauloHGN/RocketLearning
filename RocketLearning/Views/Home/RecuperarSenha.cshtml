@@ -14,7 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-
 </head>
 <!-- inicio barra superior -->
 <header>
@@ -35,25 +34,24 @@
 <!-- fim barra superior -->
 <body>
 
-    <div id="Email-container">
+    <div id="Email-container" style="display: @ViewData["EmailContainerDisplay"];">
         <h1>Recuperar senha</h1>
-        <form method="post" action="">
+        <form method="post" action="/usuario/EsqueciMinhaSenha">
 
             <input type="email" name="email" id="email" placeholder="E-mail" autocomplete="off">
             <input type="submit" value="Enviar">
         </form>
     </div>
-    <div id="Codigo-container">
+    <div id="Codigo-container" style="display: @ViewData["CodigoContainerDisplay"];">
         <h1>Codigo de verificação</h1>
-        <form method="post" action="">
-
-            <input type="codigo" name="codigo" id="codigo" placeholder="Codigo" autocomplete="off">
+        <form method="post" action="/usuario/VerificarCodigoRedefinicao">
+            <input type="text" name="codigoDigitado" id="codigo" placeholder="Codigo" autocomplete="off">
             <input type="submit" value="Enviar">
         </form>
     </div>
-    <div id="Redefinir-container">
+    <div id="Redefinir-container" style="display: @ViewData["RedefinirContainerDisplay"];">
         <h1>Redefinir senha</h1>
-        <form method="post" action="">
+        <form method="post" action="AtualizarSenhaUsuario">
 
             <input type="newsenha" name="newsenha" id="newsenha" placeholder="Nova senha" autocomplete="off">
             <input type="submit" value="Redifinir">
