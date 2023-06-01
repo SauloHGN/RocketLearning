@@ -17,26 +17,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
 </head>
-
+<!-- inicio barra superior -->
+<header>
+    <nav>
+        <a class="logo" href="/">Rocket Learning</a>
+        <div class="mobile-menu">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+        <ul class="nav-list">
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Cadastre-se</a> </li>
+            <li><a asp-controller="Home" asp-action="Index">Login</a> </li>
+        </ul>
+    </nav>
+</header>
+<!-- fim barra superior -->
 <body>
-
-    <!-- inicio barra superior -->
-    <header>
-        <nav>
-            <a class="logo" href="/">Rocket Learning</a>
-            <div class="mobile-menu">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
-            </div>
-            <ul class="nav-list">
-                <li><a a asp-controller="Home" asp-action="Sobre">Sobre</a></li>
-                <li><a a asp-controller="Home" asp-action="Cadastrar">Cadastre-se</a> </li>
-                <li><a asp-controller="Home" asp-action="Index">Login</a> </li>
-            </ul>
-        </nav>
-    </header>
-    <!-- fim barra superior -->
 
     <div id="cadastro-container">
         <h1>Crie sua Conta</h1>
