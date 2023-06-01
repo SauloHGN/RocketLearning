@@ -39,17 +39,25 @@ namespace RocketLearning.Controllers
 
         public IActionResult Cadastrar()
         {
-            return View();
+            //return View();
+            return RedirectToAction("Cadastrar", "Home");
         }
 
         [HttpPost]
         public IActionResult Cadastrar(Usuarios usuario)
         {
+            TempData["erroMensagem"] = "false";
             // obter valores do formulário
             string nome = Request.Form["nome"];
             string email = Request.Form["email"];
             string telefone = Request.Form["telefone"];
             string senha = Request.Form["password"];
+
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(telefone) || string.IsNullOrEmpty(senha))
+            {
+                TempData["erroMensagem"] = true;
+                return RedirectToAction("Cadastrar", "Home");
+            }
 
             // Verificar se já existe um usuário com o mesmo e-mail e telefone           
             bool emailJaExiste = _context.Usuarios.Any(u => u.Email == email);
@@ -58,7 +66,7 @@ namespace RocketLearning.Controllers
             Debug.WriteLine("telefoneJaExiste: " + telefoneJaExiste);
             if (emailJaExiste || telefoneJaExiste)
             {
-                // 
+                TempData["erroMensagem"] = "true";
                 return RedirectToAction("Cadastrar", "Home");
             }
 
@@ -104,6 +112,12 @@ namespace RocketLearning.Controllers
             Debug.WriteLine("Email: " + email);
             Debug.WriteLine("Senha: " + senha);
 
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+            {
+                TempData["erroLogin"] = true;
+                return RedirectToAction("Index", "Home");
+            }
+
             // Consultar o banco de dados para encontrar um usuário com o email e senha fornecidos
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Email != null && u.Email == email);
 
@@ -115,16 +129,15 @@ namespace RocketLearning.Controllers
                 if (senhaCorreta)
                 {
                     int idUsuario = usuario.Id;
-                    UsuarioController.IdUserAtual = usuario.Id;
-                    //ObterIdUsuario(idUsuario);                 
+                    UsuarioController.IdUserAtual = usuario.Id;                                   
                     // Senha correta, redirecionar para a Pagina Inicia
                     return RedirectToAction("PaginaInicial", "Home");
                 }
             }
-                      
+
             // Usuário inválido, exibir mensagem de erro ou redirecionar para a tela de login novamente
-             ViewBag.MensagemErro = "Email ou senha inválidos.";
-             return RedirectToAction("Index", "Home");     
+            TempData["erroLogin"] = "true";
+            return RedirectToAction("Index", "Home");     
         }
 
         /*public  int ObterIdUsuario(int idUsuario)
@@ -180,9 +193,75 @@ namespace RocketLearning.Controllers
             string remetente = "SuporteRocketLearning@gmail.com";
             string senhaRemetente = "xkmqzpgvkfvtfvzp";
             string assunto = "Redefinição de senha";
-            string corpo = $"Seu código de redefinição de senha é: {codigoRedefinicao}";
+            string corpo = $@"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Código de Verificação</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }}
+        .container {{
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+        }}
+        h1 {{
+            font-size: 24px;
+            margin-top: 0;
+        }}
+        p {{
+            margin-bottom: 10px;
+        }}
+        .code {{
+            display: inline-block;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;          
+        }}
+        .btn {{
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background-color .2s ease;
+        }}
+        .btn:hover {{
+            background-color: #0069d9;
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <h1>Código de Verificação</h1>
+        <p>Olá, recebemos uma solicitação para redefinir sua senha. Use o código abaixo para prosseguir:</p>
+        <div class='code'>{codigoRedefinicao}</div>
+        <p>Copie o código acima e insira na página de redefinição de senha.</p>
+        <p><span style='color: red;'><i>Se você não solicitou essa redefinição, pode ignorar este email.</i></span></p>
+        <p>Obrigado,</p>
+        <p>Equipe Rocket Learning</p>
+    </div>
+</body>
+</html>";
 
             MailMessage mensagem = new MailMessage(remetente, emailDestinatario, assunto, corpo);
+            mensagem.IsBodyHtml = true;
             SmtpClient clienteSmtp = new SmtpClient("smtp.gmail.com", 587);
             clienteSmtp.Credentials = new NetworkCredential(remetente, senhaRemetente);
             clienteSmtp.EnableSsl = true;

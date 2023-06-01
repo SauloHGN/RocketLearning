@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    bool erro = Convert.ToBoolean(TempData["erroLogin"] ?? false);
 }
 
 <!DOCTYPE html>
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
     <!-- inicio barra superior -->
     <header>
         <nav>
@@ -22,9 +24,9 @@
                 <div class="line3"></div>
             </div>
             <ul class="nav-list">
-                <li><a href="#">Sobre</a> </li>
-                <li><a asp-controller="Home" asp-action="Cadastrar">Cadastre-se</a> </li>
-                <li><a href="#">Login</a> </li>
+                <li><a a asp-controller="Home" asp-action="Sobre">Sobre</a> </li>
+                <li><a a asp-controller="Home" asp-action="Cadastrar">Cadastre-se</a> </li>
+                <li><a a asp-controller="Home" asp-action="Index">Login</a> </li>
             </ul>
         </nav>
     </header>
@@ -45,6 +47,19 @@
             <p>Ainda não tem uma conta?</p>
             <a a asp-controller="Home" asp-action="Cadastrar">Cadastre-se</a>
         </div>
+
+        @if (erro == true)
+        {
+            <div class="mensagem-erro" id="erroLogin" style="display: block">
+                Email ou Senha incorretos.
+            </div>
+        }
+        else
+        {
+            <div class="mensagem-erro" id="erroLogin" style="display: none">
+                Email ou Senha incorretos.
+            </div>
+        }
 
         <style>
 
@@ -201,6 +216,30 @@
                 font-weight: 600;
             }
             /**/
+
+            /*INICIO MENSAGEM DE ERRO*/
+            .mensagem-erro {
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+                background-color: #eebec2;
+                border-color: #eebec2;
+                color: #92363f;
+                width: 200px;
+                padding: 2.5px 10px;
+                /*margin-bottom: 10rem;*/
+                border: 1px solid transparent;
+                border-radius: 0.25rem;
+            }
+
+                .mensagem-erro.visible {
+                    display: block;
+                }
+
+                .mensagem-erro.hidden {
+                    display: none;
+                }
+            /*FIM MENSAGEM DE ERRO*/
 
         </style>
 

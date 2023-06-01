@@ -1,0 +1,484 @@
+﻿@{
+    ViewData["Title"] = "Upload";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+</head>
+<body>
+    <!-- INICIO UPLOAD DE VIDEO -->
+    <div class="imagem">
+        <img src="~/Resources/icons8-upload-para-nuvem-96.png" alt="imagem">
+    </div>
+
+    <div class="Upload-container">
+        <form method="post" action="/Video/UploadVideo" enctype="multipart/form-data">
+
+            <div class="campos-container">
+                <input name="titulo" id="titulo" placeholder="Titulo" autocomplete="off">
+            </div>
+
+            <div class="upload-box">
+                <input type="file" name="upload-file-Thumb" id="upload-file-Thumb" class="upload-input" onchange="displayFileName('file-thumb', this)">
+                <label for="upload-file-Thumb" class="upload-label">
+                    <span class="browse-btn">Clique para selecionar a thumbnail</span>
+                    <p id="file-thumb"></p>
+                </label>
+            </div>
+
+            <div class="upload-box">
+                <input type="file" name="upload-file" id="upload-file" class="upload-input" onchange="displayFileName('file-video', this)">
+                <label for="upload-file" class="upload-label">
+                    <span class="browse-btn">Clique para selecionar o vídeo</span>
+                    <p id="file-video"></p>
+                </label>
+            </div>
+
+            <div class="btn-enviar">
+                <input type="submit" value="FAZER UPLOAD">
+            </div>
+        </form>
+        <div>
+            <!-- FIM UPLOAD DE VIDEO -->
+            <!-- inicio barra lateral  -->
+
+            <div class="sidebar close">
+                <div class="logo-details">
+                    <img src="~/Resources/logo.png" alt="logo" class="imagem-logo">
+                </div>
+                <ul class="nav-links">
+
+                    <li>
+                        <a a asp-controller="Home" asp-action="PaginaInicial">
+                            <i class="sidebar-icons">
+                                <img src="~/Resources/icons8-home-page-24.png" alt="home-image" class="home-image">
+                            </i>
+                            <span class="link_name">Página Inicial</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a a asp-controller="Home" asp-action="PaginaInicial" class="link_name">Página Inicial</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="iocn-link">
+                            <a href="#">
+                                <i class="sidebar-icons">
+                                    <img src="~/Resources/icons8-list-24.png" alt="categoria-image" class="categoria-image">
+                                </i>
+                                <span class="link_name">Categorias</span>
+                            </a>
+                            <i class='bx bxs-chevron-down arrow'></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a class="link_name" href="#">Categorias</a></li>
+                            <li><a href="#">Todos</a></li>
+                            <li><a href="#">Mais Vistos</a></li>
+                            <li><a href="#">Recentes</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="sidebar-icons">
+                                <img src="~/Resources/icons8-static-views-24.png" alt="meusVideos-image" class="meusVideos-image">
+                            </i>
+                            <span class="link_name">Meus Vídeos</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="#">Meus Vídeos</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="#">
+                            <i class="sidebar-icons">
+                                <img src="~/Resources/icons8-time-machine-24.png" alt="historico-image" class="historico-image">
+                            </i>
+                            <span class="link_name">Histórico</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="#">Histórico</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="sidebar-icons">
+                                <img src="~/Resources/icons8-fazer-upload-24.png" alt="config-image" class="config-image">
+                            </i>
+
+
+                            <span class="link_name">Upload</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="#">Upload</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="sidebar-icons">
+                                <img src="~/Resources/icons8-settings-24.png" alt="config-image" class="config-image">
+                            </i>
+
+
+                            <span class="link_name">Configurações</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="#">Configurações</a></li>
+                        </ul>
+                    </li>
+                    <li>
+
+                        <a a asp-controller="Perfil" asp-action="Perfil">
+                            <div class="profile-details">
+                                <div class="profile-content">
+                                    <img src="http://unsplash.it/36/36?gravity=center" alt="profileImg">
+                                </div>
+                        </a>
+
+                        <i class='bx bx-log-out'></i>
+            </div>
+            </li>
+            </ul>
+        </div>
+
+        <!-- Fim barra lateral -->
+    </div>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Helvetica;
+            border: none;
+            color: #ececec;
+        }
+
+        body {
+            background-color: #292b2f;
+            margin-top: 25vh;
+        }
+
+        .imagem {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            margin-top: -10vh;
+            margin-bottom: 30px;
+        }
+
+        .Upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 55vh;
+        }
+
+        textarea:focus, input:focus {
+            outline: none;
+        }
+
+        input {
+            display: flex;
+            border-bottom: 2px solid #323232;
+            width: 450px;
+            padding: 10px;
+            font-size: 1rem;
+            margin: 0 auto;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #202225;
+        }
+
+            input:focus {
+                border-bottom: 2px solid #1eb9b9;
+            }
+
+            input::placeholder {
+                color: #c6cdd5;
+            }
+
+            input[type="submit"] {
+                display: flex;
+                text-align: center;
+                text-transform: uppercase;
+                border: none;
+                height: 40px;
+                width: 150px;
+                border-radius: 20px;
+                cursor: pointer;
+                color: #1B223C;
+                background-color: #1eb9b9;
+                font-weight: bold;
+                margin: 0 auto;
+            }
+
+                input[type="submit"]:hover {
+                    background-color: #208888;
+                    transition: .5s;
+                }
+
+        .upload-box {
+            width: 500px;
+            height: 100px;
+            border: 2px dashed #aaa;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            font-family: Helvetica, sans-serif;
+            margin-bottom: 25px;
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        .upload-label {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .browse-btn {
+            color: #c6cdd5;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* inicio sidebar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Helvetica, sans-serif;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 260px;
+            background: #202225;
+            z-index: 100;
+            transition: all 0.5s ease;
+        }
+
+            .sidebar.close {
+                width: 78px;
+            }
+
+        .imagem-logo {
+            height: 60%;
+            width: 60%;
+            margin-left: 1vw;
+            margin-top: 2.5vh;
+        }
+
+        .sidebar-icons {
+            margin-left: -2px;
+            margin-top: 5px;
+        }
+
+        .sidebar .nav-links {
+            height: 100%;
+            padding: 30px 0 150px 0;
+            overflow: auto;
+        }
+
+        .sidebar.close .nav-links {
+            overflow: visible;
+        }
+
+        .sidebar .nav-links::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar .nav-links li {
+            position: relative;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+            .sidebar .nav-links li:hover {
+                background: #1b1b1b;
+            }
+
+            .sidebar .nav-links li .iocn-link {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+        .sidebar.close .nav-links li .iocn-link {
+            display: block
+        }
+
+        .sidebar .nav-links li i {
+            height: 50px;
+            min-width: 78px;
+            text-align: center;
+            line-height: 50px;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .nav-links i.arrow {
+            display: none;
+        }
+
+        .sidebar .nav-links li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .sidebar.close .nav-links li a .link_name {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar .nav-links li .sub-menu {
+            padding: 6px 6px 14px 80px;
+            margin-top: -10px;
+            background: #1b1b1b;
+            display: none;
+        }
+
+        .sidebar .nav-links li.showMenu .sub-menu {
+            display: block;
+        }
+
+        .sidebar .nav-links li .sub-menu a {
+            color: #fff;
+            font-size: 15px;
+            padding: 5px 0;
+            white-space: nowrap;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+            .sidebar .nav-links li .sub-menu a:hover {
+                opacity: 1;
+            }
+
+        .sidebar.close .nav-links li .sub-menu {
+            position: absolute;
+            left: 100%;
+            top: -10px;
+            margin-top: 0;
+            padding: 10px 20px;
+            border-radius: 0 6px 6px 0;
+            opacity: 0;
+            display: block;
+            pointer-events: none;
+            transition: 0s;
+        }
+
+        .sidebar.close .nav-links li:hover .sub-menu {
+            top: 0;
+            opacity: 1;
+            pointer-events: auto;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar .nav-links li .sub-menu .link_name {
+            display: none;
+        }
+
+        .sidebar.close .nav-links li .sub-menu .link_name {
+            font-size: 18px;
+            opacity: 1;
+            display: block;
+        }
+
+        .sidebar .nav-links li .sub-menu.blank {
+            opacity: 1;
+            pointer-events: auto;
+            padding: 3px 20px 6px 16px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar .nav-links li:hover .sub-menu.blank {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .profile-details:hover .profile_name {
+            visibility: visible;
+        }
+
+        .sidebar .profile-details {
+            position: fixed;
+            bottom: 0;
+            width: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1b1b1b;
+            padding: 12px 0;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.close .profile-details {
+            background: none;
+        }
+
+        .sidebar .profile-details img {
+            height: 52px;
+            width: 52px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin: 0 14px 0 12px;
+            background: #1b1b1b;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.close .profile-details img {
+            padding: 10px;
+        }
+
+        .sidebar .profile-details .profile_name,
+        .sidebar .profile-details .job {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .sidebar.close .profile-details i,
+        .sidebar.close .profile-details .profile_name,
+        .sidebar.close .profile-details .job {
+            display: none;
+        }
+
+        .sidebar .profile-details.job {
+            font-size: 12px;
+        }
+        /* fim side bar */
+
+    </style>
+
+    <script>
+        function displayFileName(elementId, input) {
+            var fileName = input.files[0].name;
+            document.getElementById(elementId).innerText = fileName;
+        }
+    </script>
+
+</body>
+</html>

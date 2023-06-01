@@ -1,7 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Cadastrar-se"; 
+    ViewData["Title"] = "Cadastrar-se";
+    bool erro = Convert.ToBoolean(TempData["erroMensagem"] ?? false);
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,25 +16,28 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
+
 </head>
-<!-- inicio barra superior -->
-<header>
-    <nav>
-        <a class="logo" href="/">Rocket Learning</a>
-        <div class="mobile-menu">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
-        </div>
-        <ul class="nav-list">
-            <li><a href="#">Sobre</a></li>
-            <li><a href="#">Cadastre-se</a> </li>
-            <li><a asp-controller="Home" asp-action="Index">Login</a> </li>
-        </ul>
-    </nav>
-</header>
-<!-- fim barra superior -->
+
 <body>
+
+    <!-- inicio barra superior -->
+    <header>
+        <nav>
+            <a class="logo" href="/">Rocket Learning</a>
+            <div class="mobile-menu">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <ul class="nav-list">
+                <li><a asp-controller="Home" asp-action="Sobre">Sobre</a></li>
+                <li><a asp-controller="Home" asp-action="Cadastrar">Cadastre-se</a> </li>
+                <li><a asp-controller="Home" asp-action="Index">Login</a> </li>
+            </ul>
+        </nav>
+    </header>
+    <!-- fim barra superior -->
 
     <div id="cadastro-container">
         <h1>Crie sua Conta</h1>
@@ -44,186 +47,196 @@
             <!-- <label for="nome">Nome</label> -->
             <input type="email" name="email" id="email" placeholder="E-mail" autocomplete="off">
             <!-- <label for="telefone">Telefone</label> -->
-            <input type="telefone" name="telefone" id="telefone" placeholder="Telefone" autocomplete="off" class="form-control" onkeypress="$(this).mask('(00) 00000-0009')">
+            <input type="telefone" name="telefone" id="telefone" placeholder="Telefone" autocomplete="off" class="form-control" onkeyup="$(this).mask('(00) 00000-0009')">
             <!-- <label for="password">Senha</label> -->
             <input type="password" name="password" id="password" placeholder="Senha">
 
             <input type="submit" value="Cadastre-se">
         </form>
     </div>
-        @if (ViewBag.MensagemErro != null)
-        {
-            <div class="mensagem-erro">
-                @ViewBag.MensagemErro
-            </div>
+
+
+
+    @if (erro == true)
+    {
+        <div class="mensagem-erro" id="erroCadastro" style="display: block">
+            Dados incorretos ou já estão sendo usados. Tente Novamente
+        </div>
+    }
+    else
+    {
+        <div class="mensagem-erro" id="erroCadastro" style="display: none">
+            Dados incorretos ou já estão sendo usados. Tente Novamente
+        </div>
+    }
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Helvetica;
+            color: #ececec;
+            border: none;
         }
 
-        <style>
+        body {
+            background-image: url('../img/background.jpg');
+            background-size: cover;
+            background-position-y: -200px;
+            background-color: #292b2f;
+        }
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: Helvetica;
-                color: #ececec;
-                border: none;
+        textarea:focus, input:focus {
+            outline: none;
+        }
+
+        a {
+            font-size: .8rem;
+        }
+
+            a:hover {
+                color: #208888;
             }
 
-            body {
-                background-image: url('../img/background.jpg');
-                background-size: cover;
-                background-position-y: -200px;
-                background-color: #292b2f;
+        #cadastro-container {
+            background-color: #202225;
+            margin-left: auto;
+            margin-right: auto;
+            width: 400px;
+            padding: 20px 30px;
+            margin-top: 15vh;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 10px 40px #1b1b1b;
+        }
+
+        form {
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+
+        label, input {
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: .8rem;
+        }
+
+        input {
+            border-bottom: 2px solid #323232;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #202225;
+        }
+
+            input:focus {
+                border-bottom: 2px solid #1eb9b9;
             }
 
-            textarea:focus, input:focus {
-                outline: none;
+            input::placeholder {
+                color: #c6cdd5;
             }
 
-            a {
-                font-size: .8rem;
+        #forgot-pass {
+            display: block;
+            text-align: right;
+        }
+
+        input[type="submit"] {
+            text-align: center;
+            text-transform: uppercase;
+            border: none;
+            height: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+            cursor: pointer;
+            color: #1B223C;
+            background-color: #1eb9b9;
+            font-weight: bold;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #208888;
+                transition: .5s;
             }
 
-                a:hover {
-                    color: #208888;
-                }
+        /* INICIO NAVBAR */
+        header {
+            margin: 0;
+            padding: 0;
+        }
 
-            #cadastro-container {
-                background-color: #202225;
-                margin-left: auto;
-                margin-right: auto;
-                width: 400px;
-                padding: 20px 30px;
-                margin-top: 15vh;
-                border-radius: 10px;
-                text-align: center;
-                box-shadow: 0px 10px 40px #1b1b1b;
+        a {
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+            a:hover {
+                opacity: 0.7;
             }
 
-            form {
-                margin-top: 30px;
-                margin-bottom: 40px;
+        .logo {
+            font-size: 24px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-family: Helvetica, Arial;
+            background: #202225;
+            height: 8vh;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+        }
+
+            .nav-list li {
+                margin-left: 32px;
             }
 
-            label, input {
-                display: block;
-                width: 100%;
-                text-align: left;
-            }
+        li a {
+            font-size: 16px; /* tamanho da fonte desejado */
+            font-weight: 600;
+        }
+        /**/
 
-            label {
-                font-weight: bold;
-                font-size: .8rem;
-            }
+        /*INICIO MENSAGEM DE ERRO*/
+        .mensagem-erro {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            background-color: #eebec2;
+            border-color: #eebec2;
+            color: #92363f;
+            width: 200px;
+            padding: 2.5px 10px;
+            margin-bottom: 10rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+        }
 
-            input {
-                border-bottom: 2px solid #323232;
-                padding: 10px;
-                font-size: 1rem;
-                margin-bottom: 20px;
-                border-radius: 5px;
-                background-color: #202225;
-            }
-
-                input:focus {
-                    border-bottom: 2px solid #1eb9b9;
-                }
-
-                input::placeholder {
-                    color: #c6cdd5;
-                }
-
-            #forgot-pass {
-                display: block;
-                text-align: right;
-            }
-
-            input[type="submit"] {
-                text-align: center;
-                text-transform: uppercase;
-                border: none;
-                height: 40px;
-                border-radius: 20px;
-                margin-top: 30px;
-                cursor: pointer;
-                color: #1B223C;
-                background-color: #1eb9b9;
-                font-weight: bold;
-            }
-
-                input[type="submit"]:hover {
-                    background-color: #208888;
-                    transition: .5s;
-                }
-
-            /* INICIO NAVBAR */
-            header {
-                margin: 0;
-                padding: 0;
-            }
-
-            a {
-                color: #fff;
-                text-decoration: none;
-                transition: 0.3s;
-            }
-
-                a:hover {
-                    opacity: 0.7;
-                }
-
-            .logo {
-                font-size: 24px;
-            }
-
-            nav {
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                font-family: Helvetica, Arial;
-                background: #202225;
-                height: 8vh;
-            }
-
-            .nav-list {
-                list-style: none;
-                display: flex;
-            }
-
-                .nav-list li {
-                    margin-left: 32px;
-                }
-
-            li a {
-                font-size: 16px; /* tamanho da fonte desejado */
-                font-weight: 600;
-            }
-            /**/
-            
-            /*INICIO MENSAGEM DE ERRO*/
-            .mensagem-erro {
-                margin-left: auto;
-                margin-right: auto;
-                text-align: center;
-                background-color: #eebec2;
-                border-color: #eebec2;
-                color: #92363f;
-                width: 200px;
-                padding: 2.5px 10px;
-                margin-bottom: 10rem;
-                border: 1px solid transparent;
-                border-radius: 0.25rem;
-            }
-
-            /*.mensagem-erro.visible {
+            .mensagem-erro.visible {
                 display: block;
             }
 
             .mensagem-erro.hidden {
                 display: none;
-            }*/
-            /*FIM MENSAGEM DE ERRO*/
-            
-        </style>
+            }
+        /*FIM MENSAGEM DE ERRO*/
+
+    </style>
+
 </body>
 </html>
