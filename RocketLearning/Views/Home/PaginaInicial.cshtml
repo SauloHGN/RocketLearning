@@ -31,7 +31,7 @@
 
     <div class="sidebar close">
         <div class="logo-details">
-            <img src="~/Resources/novaLogo.png" alt="logo" class="imagem-logo">
+            <img src="~/Resources/logo.png" alt="logo" class="imagem-logo">
         </div>
         <ul class="nav-links">
 
@@ -92,7 +92,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a a asp-controller="Home" asp-action="Upload">
                     <i class="sidebar-icons">
                         <img src="~/Resources/icons8-fazer-upload-24.png" alt="config-image" class="config-image">
                     </i>
@@ -101,7 +101,7 @@
                     <span class="link_name">Upload</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Upload</a></li>
+                    <li><a a asp-controller="Home" asp-action="Upload" class="link_name" >Upload</a></li>
                 </ul>
             </li>
 

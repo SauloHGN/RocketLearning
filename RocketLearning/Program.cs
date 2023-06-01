@@ -1,4 +1,6 @@
+using Google.Apis.Drive.v3;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using RocketLearning.Models;
 using System.Configuration;
@@ -17,6 +19,17 @@ internal class Program
         builder.Services.AddDbContextPool<DataContext>(options =>
         options.UseMySql(connectionString,
             ServerVersion.AutoDetect(connectionString)));
+        //
+
+        // API GOOGLE DRIVE
+        builder.Services.AddTransient<DriveService>();
+        builder.Services.AddAuthentication()
+           .AddGoogle(options =>
+           {
+               options.ClientId = builder.Configuration["ContentRootPath"] + "/Properties/client_secret_1031212755190-f2gnec77k5vaksm9l9oq8bsitk6in2i1.apps.googleusercontent.com.json";
+               options.ClientSecret = builder.Configuration["ContentRootPath"] + "/Properties/client_secret_1031212755190-f2gnec77k5vaksm9l9oq8bsitk6in2i1.apps.googleusercontent.com.json";
+           });
+        
         //
 
         var app = builder.Build();

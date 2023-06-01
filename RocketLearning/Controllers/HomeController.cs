@@ -18,6 +18,11 @@ namespace RocketLearning.Controllers
             return View();//retorna tela login
         }
 
+        public IActionResult Sobre()
+        {
+            return PartialView("Sobre");
+        }
+
         public IActionResult Cadastrar()
         {
             return PartialView("Cadastrar");// retorna tela cadastro
@@ -36,6 +41,11 @@ namespace RocketLearning.Controllers
         public IActionResult RecuperarSenha()
         {
             return PartialView("RecuperarSenha");//retorna tela de Recuperar Senha      
+        }
+
+        public IActionResult Upload()
+        {
+            return PartialView("Upload");//retorna tela de Recuperar Senha      
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
