@@ -1,6 +1,7 @@
 ﻿@{
-	ViewData["Title"] = "Recuperar Senha";
+    ViewData["Title"] = "Recuperar Senha";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 </head>
+
 <!-- inicio barra superior -->
 <header>
     <nav>
@@ -26,34 +28,34 @@
         </div>
         <ul class="nav-list">
             <li><a href="#">Sobre</a></li>
-            <li><a asp-controller="Home" asp-action="Cadastrar">Cadastre-se</a> </li>
-            <li><a asp-controller="Home" asp-action="Index">Login</a> </li>
+            <li><a asp-controller="Home" asp-action="Cadastrar">Cadastre-se</a></li>
+            <li><a asp-controller="Home" asp-action="Index">Login</a></li>
         </ul>
     </nav>
 </header>
 <!-- fim barra superior -->
-<body>
 
+<body>
     <div id="Email-container" style="display: @ViewData["EmailContainerDisplay"];">
         <h1>Recuperar senha</h1>
         <form method="post" action="/usuario/EsqueciMinhaSenha">
-
             <input type="email" name="email" id="email" placeholder="E-mail" autocomplete="off">
             <input type="submit" value="Enviar">
         </form>
     </div>
+
     <div id="Codigo-container" style="display: @ViewData["CodigoContainerDisplay"];">
         <h1>Codigo de verificação</h1>
-        <form method="post" action="/usuario/VerificarCodigoRedefinicao">
+        <form method="post" action="/usuario/VerificarCodigoRedefinicao?email=@ViewData["Email"]">
             <input type="text" name="codigoDigitado" id="codigo" placeholder="Codigo" autocomplete="off">
             <input type="submit" value="Enviar">
         </form>
     </div>
+
     <div id="Redefinir-container" style="display: @ViewData["RedefinirContainerDisplay"];">
         <h1>Redefinir senha</h1>
-        <form method="post" action="AtualizarSenhaUsuario">
-
-            <input type="newsenha" name="newsenha" id="newsenha" placeholder="Nova senha" autocomplete="off">
+        <form method="post" action="/usuario/AtualizarSenhaUsuario?email=@ViewData["Email"]">
+            <input type="password" name="novaSenha" id="novaSenha" placeholder="Nova senha" autocomplete="off">
             <input type="submit" value="Redifinir">
         </form>
     </div>

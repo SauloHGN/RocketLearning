@@ -147,22 +147,24 @@ namespace RocketLearning.Controllers
         public IActionResult EsqueciMinhaSenha()
         {
             string email = Request.Form["email"];
-
+            ViewData["Email"] = email;
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Email != null && u.Email == email);
 
             if (usuario != null)
             {
                 string codigoRedefinicao = GerarCodigoRedefinicao();
-
                 usuario.Codigo = codigoRedefinicao;
                 _context.SaveChanges();
+
                 EnviarEmailRedefinicaoSenha(email, codigoRedefinicao);
 
                 ViewData["EmailContainerDisplay"] = "none";
                 ViewData["CodigoContainerDisplay"] = "block";
                 ViewData["RedefinirContainerDisplay"] = "none";
+
                 return View("~/Views/Home/RecuperarSenha.cshtml");
             }
+
             return View("~/Views/Home/RecuperarSenha.cshtml");
         }
 
@@ -170,7 +172,6 @@ namespace RocketLearning.Controllers
         {
             Random random = new Random();
             int codigo = random.Next(1000, 10000);
-
             return codigo.ToString();
         }
 
@@ -183,10 +184,8 @@ namespace RocketLearning.Controllers
 
             MailMessage mensagem = new MailMessage(remetente, emailDestinatario, assunto, corpo);
             SmtpClient clienteSmtp = new SmtpClient("smtp.gmail.com", 587);
-
             clienteSmtp.Credentials = new NetworkCredential(remetente, senhaRemetente);
             clienteSmtp.EnableSsl = true;
-
             clienteSmtp.Send(mensagem);
         }
 
@@ -194,11 +193,13 @@ namespace RocketLearning.Controllers
         {
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Email != null && u.Email == email);
 
-            if (usuario != null && usuario.Codigo == codigoDigitado)
+            if (usuario != null && string.Equals(usuario.Codigo, codigoDigitado))
             {
+                usuario.Codigo = null;
                 ViewData["EmailContainerDisplay"] = "none";
                 ViewData["CodigoContainerDisplay"] = "none";
                 ViewData["RedefinirContainerDisplay"] = "block";
+                ViewData["Email"] = email;
                 return View("~/Views/Home/RecuperarSenha.cshtml");
             }
             else
@@ -206,6 +207,7 @@ namespace RocketLearning.Controllers
                 ViewData["EmailContainerDisplay"] = "none";
                 ViewData["CodigoContainerDisplay"] = "block";
                 ViewData["RedefinirContainerDisplay"] = "none";
+                ViewData["Email"] = email;
                 return View("~/Views/Home/RecuperarSenha.cshtml");
             }
         }
@@ -216,17 +218,17 @@ namespace RocketLearning.Controllers
             if (usuario != null)
             {
                 string senhaCriptografada = CriptografarSenha(novaSenha);
-
                 usuario.Senha = senhaCriptografada;
                 _context.SaveChanges();
 
-                return View("~/Views/Home/ndex.cshtml");
+                return View("~/Views/Home/Index.cshtml");
             }
             else
             {
                 ViewData["EmailContainerDisplay"] = "none";
                 ViewData["CodigoContainerDisplay"] = "none";
                 ViewData["RedefinirContainerDisplay"] = "block";
+
                 return View("~/Views/Home/RecuperarSenha.cshtml");
             }
         }
