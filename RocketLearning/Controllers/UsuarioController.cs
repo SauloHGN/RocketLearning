@@ -129,7 +129,8 @@ namespace RocketLearning.Controllers
                 if (senhaCorreta)
                 {
                     int idUsuario = usuario.Id;
-                    UsuarioController.IdUserAtual = usuario.Id;                                   
+                    UsuarioController.IdUserAtual = usuario.Id;
+                    TempData["idUserAtual"] = usuario.Id;                   
                     // Senha correta, redirecionar para a Pagina Inicia
                     return RedirectToAction("PaginaInicial", "Home");
                 }

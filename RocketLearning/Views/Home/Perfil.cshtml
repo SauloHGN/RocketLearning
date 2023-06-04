@@ -22,25 +22,54 @@
     <!-- inicio conteiner perfil -->
     <div id="perfil-container">
         <h1>Editar Perfil</h1>
+
         <div class="box-primary">
-            <img class="image" src="http://unsplash.it/36/36?gravity=center" alt="perfil-photo" />
-            <a href="#" class="btn-add"> <img src="~/Resources/icons8-add-48.png" alt="add-icon"></a>
-        </div>
+            <form method="post" action="/Perfil/UploadFoto" enctype="multipart/form-data">
 
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" autocomplete="off" value="@Html.Raw(ViewBag.Nome)">
+                @if (TempData["FotoPerfil"] == null || string.IsNullOrEmpty(TempData["FotoPerfil"].ToString()))
+                {
+                    <img class="image" src="http://unsplash.it/36/36?gravity=center" alt="perfil-photo" />
+                }
+                else
+                {
+                    @if (ViewBag.TipoImagem == "jpeg")
+                    {
+                        <img class="image" src="data:image/jpeg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    }
+                    else if (ViewBag.TipoImagem == "png")
+                    {
+                        <img class="image" src="data:image/png;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    }
+                    else if (ViewBag.TipoImagem == "svg")
+                    {
+                        <img class="image" src="data:image/svg+xml;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    }
+                    else
+                    {
+                        <img class="image" src="data:image/jpg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    }
+                }                
+                <a href="#" class="btn-add" id="addBtn"> <img src="~/Resources/icons8-add-48.png" alt="add-icon"></a>           
+                <input type="file" id="fileInput" name="file" style="display: none;"/>     
+                <input type="submit" name="submitBtn" id="submitBtn" style="display: none">
+            </form>
         </div>
-        <div class="form-group">
-            <label for="email">E-mail:</label>
-            <input type="text" id="email" name="email" autocomplete="off" value="@Html.Raw(ViewBag.Email)">
-        </div>
-        <div class="form-group">
-            <label for="telefone">Telefone:</label>
-            <input type="text" id="telefone" name="telefone" autocomplete="off" class="form-control" onkeypress="$(this).mask('(00) 00000-0009')" value="@Html.Raw(ViewBag.Telefone)">
-        </div>
+        <form method="post" action="/Perfil/Editar">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" autocomplete="off" value="@TempData["Nome"]">
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="text" id="email" name="email" autocomplete="off" value="@TempData["Email"]">
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" name="telefone" autocomplete="off" class="form-control" onkeypress="$(this).mask('(00) 00000-0009')" value="@TempData["Telefone"]">
+            </div>
 
-        <input type="submit" value="Editar">
+            <input type="submit" value="Editar">
+        </form>
     </div>
     <!-- final conteiner perfil -->
     <!-- barra lateral -->
@@ -464,6 +493,17 @@
 
 
     </style>
+
+    <script>
+        document.getElementById('addBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            document.getElementById('submitBtn').click();
+        });
+    </script>
 
 </body>
 </html>
