@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Exibir Vídeo";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.youtube.com/player_api"></script>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <title>Video</title>
+</head>
+<body>
+
+   
+    <div class="video-container" id="player">
+        <iframe width="800" height="500" src="https://www.youtube.com/embed/@ViewBag.VideoId?" type="video/mp4" frameborder="0"></iframe>
+    </div> 
+
+</body>
+
+<style>
+
+    body {
+        background-color: #292b2f;
+        margin-top: 10vh;
+    }
+
+    .video-container {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        border-radius: .5rem;
+        margin: 0 auto;
+    }
+
+    .player{
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        border-radius: .5rem;
+        margin: 0 auto;
+    }
+</style>
+
+<script>
+
+    
+   // Inicializar o player
+   function onYouTubePlayerAPIReady() {
+        // Criar o player
+        var player = new YT.Player('player', {
+            height: '500',
+            width: '800', 
+            videoId: '@ViewBag.VideoId', // ID do vídeo 
+            playerVars: {
+                autoplay: 1, // Autoplay ativado
+                rel: 0, // Vídeos relacionados desativados
+                showinfo: 0, // Informações do vídeo desativadas
+                modestbranding: 1 // Marca do YouTube mínima
+            }
+        });
+    }
+</script>
+
+</html>

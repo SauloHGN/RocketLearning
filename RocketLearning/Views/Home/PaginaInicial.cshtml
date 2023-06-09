@@ -1,5 +1,10 @@
-﻿@{
+﻿@using RocketLearning.Models
+@using RocketLearning.Controllers
+@{
     ViewData["Title"] = "Pagina Inicial";
+    var controller = new PaginaInicialController();
+    var videos = await controller.TesteVideo();
+    //@model List<VideoViewModel>   
 }
 
 <!DOCTYPE html>
@@ -105,8 +110,8 @@
                 </ul>
             </li>
 
-            <li>
-                <a href="#">
+            <li>              
+                <a>
                     <i class="sidebar-icons">
                         <img src="~/Resources/icons8-settings-24.png" alt="config-image" class="config-image">
                     </i>
@@ -115,8 +120,8 @@
                     <span class="link_name">Configurações</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Configurações</a></li>
-                </ul>
+                    <li><a class="link_name">Configurações</a></li>
+                </ul>             
             </li>
             <li>
 
@@ -135,23 +140,23 @@
 
 
 
-
     <!-- Fim barra lateral -->
     <!-- video -->
     <div class="videos">
         <section class="video-section">
 
+            @foreach (var video in videos)
+            {
             <article class="video-container">
-
-                <a href="#" class="thumbnail" data-duration="12:24">
-                    <img class="thumbnail-image" src="http://unsplash.it/250/150?gravity=center" />
+                    <a href="@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="thumbnail" data-duration="11:11">
+                        <img class="thumbnail-image" src="@video.ThumbnailUrl" />
                 </a>
                 <div class="video-bottom-section">
                     <a href="#">
                         <img class="channel-icon" src="http://unsplash.it/36/36?gravity=center" />
                     </a>
                     <div class="video-details">
-                        <a href="#" class="video-title">Video Title</a>
+                            <a "@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="video-title">@video.Title</a>
                         <a href="#" class="video-channel-name">Channel Name</a>
                         <div class="video-metadata">
                             <span>12K views</span>
@@ -161,71 +166,7 @@
                     </div>
                 </div>
             </article>
-
-            <article class="video-container">
-
-                <a href="#" class="thumbnail" data-duration="12:24">
-                    <img class="thumbnail-image" src="http://unsplash.it/250/150?gravity=center" />
-                </a>
-                <div class="video-bottom-section">
-                    <a href="#">
-                        <img class="channel-icon" src="http://unsplash.it/36/36?gravity=center" />
-                    </a>
-                    <div class="video-details">
-                        <a href="#" class="video-title">Video Title</a>
-                        <a href="#" class="video-channel-name">Channel Name</a>
-                        <div class="video-metadata">
-                            <span>12K views</span>
-                            •
-                            <span>1 week ago</span>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <article class="video-container">
-
-                <a href="#" class="thumbnail" data-duration="12:24">
-                    <img class="thumbnail-image" src="http://unsplash.it/250/150?gravity=center" />
-                </a>
-                <div class="video-bottom-section">
-                    <a href="#">
-                        <img class="channel-icon" src="http://unsplash.it/36/36?gravity=center" />
-                    </a>
-                    <div class="video-details">
-                        <a href="#" class="video-title">Video Title</a>
-                        <a href="#" class="video-channel-name">Channel Name</a>
-                        <div class="video-metadata">
-                            <span>12K views</span>
-                            •
-                            <span>1 week ago</span>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-
-            <article class="video-container">
-
-                <a href="#" class="thumbnail" data-duration="12:24">
-                    <img class="thumbnail-image" src="http://unsplash.it/250/150?gravity=center" />
-                </a>
-                <div class="video-bottom-section">
-                    <a href="#">
-                        <img class="channel-icon" src="http://unsplash.it/36/36?gravity=center" />
-                    </a>
-                    <div class="video-details">
-                        <a href="#" class="video-title">Video Title</a>
-                        <a href="#" class="video-channel-name">Channel Name</a>
-                        <div class="video-metadata">
-                            <span>12K views</span>
-                            •
-                            <span>1 week ago</span>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
+            }
 
         </section>
     </div>
@@ -280,13 +221,17 @@
                 font-size: .9rem;
             }
 
-        .thumbnail-image {
-            width: 100%;
+        .thumbnail-image {    
             height: 100%;
-            min-width: 250px;
-            min-height: 150px;
+            width: 100%;
+            min-width: 290px;
+            min-height: 175px;          
+            max-width: 290px;
+            max-height:175px;
+            object-fit: cover;
             background-color: #AAA;
             border-radius: 5px;
+            position: center;
         }
 
         .video-bottom-section {

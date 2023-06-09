@@ -1,5 +1,4 @@
-﻿using Google.Apis.Drive.v3;
-using Google.Apis.Auth;
+﻿using Google.Apis.Auth;
 using Google.Apis.Upload;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -9,71 +8,124 @@ using System.Linq.Expressions;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.AspNetCore.Hosting.Server;
+using Google.Apis.Services;
+using Google.Apis.YouTube.v3.Data;
+using Google.Apis.YouTube.v3;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Util.Store;
 
 namespace RocketLearning.Controllers
 {
     public class VideoController : Controller
     {
-        private readonly DriveService _driveService;
         private readonly DataContext _context;
+        private readonly IConfiguration _configuration;
 
-        public VideoController(DataContext context, DriveService driveService)
+        public VideoController(DataContext context, IConfiguration configuration)
         {
             _context = context;
-            _driveService = driveService;
+            _configuration = configuration;
         }
 
         [HttpPost]
+        [Route("/Upload/Video")]
         public async Task<IActionResult> UploadVideo()
         {
-            var videoFile = Request.Form.Files["upload-file"];
+            var videoFile = Request.Form.Files.GetFile("upload-file");
+            var thumbnailFile = Request.Form.Files.GetFile("upload-file-Thumb");
+            var title = Request.Form["titulo"];
 
-            if (videoFile != null && videoFile.Length > 0)
+
+            UserCredential credential;
+            using (var stream = new FileStream("client_secret_271082792456-a95aivs2vdmq634iebb8klg54f1717fq.apps.googleusercontent.com.json",
+                FileMode.Open, FileAccess.Read))
             {
-                var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    new[] { YouTubeService.Scope.YoutubeUpload },
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore("Rocket Learning")
+                );
+            }
+
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "Rocket Learning"
+            });
+
+            // Crie um objeto Video com as informações do vídeo
+            var video = new Google.Apis.YouTube.v3.Data.Video();
+            video.Snippet = new VideoSnippet();
+            video.Snippet.Title = title;
+            video.Snippet.Description = "Descrição do vídeo";
+            video.Snippet.Tags = new[] { "tag1", "tag2", "tag3" };
+
+            // Upload do thumbnail
+            using (var thumbnailStream = thumbnailFile.OpenReadStream())
+            {
+                var thumbnailInsertRequest = youtubeService.Thumbnails.Set(video.Id, thumbnailStream, "image/jpeg");
+                await thumbnailInsertRequest.UploadAsync();
+            }
+
+            try
+            {
+                // Upload do vídeo
+                using (var videoStream = videoFile.OpenReadStream())
                 {
-                    Name = videoFile.FileName,
-                    MimeType = videoFile.ContentType
-                };
+                    var videoInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", videoStream, "video/*");
 
-                var request = _driveService.Files.Create(fileMetadata, videoFile.OpenReadStream(), fileMetadata.MimeType);
-                request.Fields = "id";
+                    // Manipuladores de eventos para acompanhar o progresso do upload                   
+                    videoInsertRequest.ResponseReceived += VideoInsertRequest_ResponseReceived;
+                    videoInsertRequest.ProgressChanged += VideoInsertRequest_ProgressChanged;
 
-                try
-                {
-                    var mediaUpload = request.UploadAsync();
+                    var uploadResponse = await videoInsertRequest.UploadAsync();
 
-                    await mediaUpload;
-
-                    var file = Task.FromResult(request.ResponseBody);
-                    
-
-                    if (file != null)
+                    if (uploadResponse.Status == UploadStatus.Failed)
                     {
-                        return Ok("Vídeo enviado com sucesso. ID do arquivo: " + file.Id);
+                        // Upload falhou
+                        Debug.WriteLine("Falha ao fazer upload do vídeo");
+                        Debug.WriteLine("Status de falha: " + uploadResponse.Exception.Message);
                     }
-                    else
-                    {
-                        return BadRequest("Ocorreu um erro ao fazer o upload do vídeo para o Google Drive.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
+                   
                 }
             }
-            return BadRequest("Nenhum vídeo encontrado para fazer upload.");
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu uma exceção durante o upload do vídeo: " + ex.Message);
+            }
+
+            return RedirectToAction("PaginaInicial", "Home");
         }
 
-        private byte[] ConvertFileToByteArray(IFormFile file)
+        private void VideoInsertRequest_ProgressChanged(IUploadProgress progress)
         {
-            using (var memoryStream = new MemoryStream())
+
+            switch (progress.Status)
             {
-                file.CopyTo(memoryStream);
-                return memoryStream.ToArray();
+                case UploadStatus.Uploading:
+                    Debug.WriteLine($"Progresso do upload: {progress.BytesSent} bytes enviados.");
+                    break;
+                case UploadStatus.Completed:
+                    Debug.WriteLine("Upload completo!");
+                    break;
+                case UploadStatus.Failed:
+                    Debug.WriteLine("Falha no upload!");             
+                    break;
             }
+
         }
 
+        // Manipulador de evento para receber a resposta após o upload
+        private void VideoInsertRequest_ResponseReceived(Google.Apis.YouTube.v3.Data.Video video)
+        {
+            Console.WriteLine("Upload em andamento: " + video.Status.UploadStatus);
+            Debug.WriteLine("Video enviado com sucesso!");
+            Debug.WriteLine("ID do vídeo: " + video.Id);
+            Debug.WriteLine("Título do vídeo: " + video.Snippet.Title);
+            // Outras informações sobre o vídeo, se necessário
+        }
     }  
 }
     

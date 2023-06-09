@@ -48,6 +48,11 @@ namespace RocketLearning.Controllers
             return PartialView("Upload");//retorna tela de Recuperar Senha      
         }
 
+        public IActionResult TesteVideo()
+        {
+            return PartialView("TesteVideo");//retorna tela de Teste Video      
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

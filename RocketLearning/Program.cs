@@ -1,5 +1,8 @@
+using Google.Apis.Services;
+using Google.Apis.YouTube.v3;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using RocketLearning.Controllers;
 using RocketLearning.Models;
 using System.Configuration;
 
@@ -19,22 +22,11 @@ internal class Program
             ServerVersion.AutoDetect(connectionString)));
         //
 
-
-        // API YOUTUBE
-        //var credential = GoogleCredential.FromApiKey("YOUR_API_KEY");
+        // YOUTUBE API
+        builder.Configuration.AddJsonFile("appsettings.json");
+        builder.Services.AddYouTubeService(builder.Configuration);
         //
-
-        // API GOOGLE DRIVE
-        /*var clientSecretPath = Path.Combine(builder.Environment.ContentRootPath, "client_secret_1031212755190-f2gnec77k5vaksm9l9oq8bsitk6in2i1.apps.googleusercontent.com.json");
-
-        builder.Services.AddTransient<DriveService>();
-        builder.Services.AddAuthentication()
-           .AddGoogle(options =>           {
-               options.ClientId = clientSecretPath;
-               options.ClientSecret = clientSecretPath;
-           });
-        */
-        //
+       
 
         var app = builder.Build();
 
