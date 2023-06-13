@@ -129,7 +129,7 @@ namespace RocketLearning.Controllers
             {
                 string[] validExtensions = { ".png", ".jpg", ".jpeg", ".svg" };
                 string fileExtension = Path.GetExtension(file.FileName);
-
+                TempData["TipoImagem"] = fileExtension;
                 return validExtensions.Contains(fileExtension.ToLower());
             }
             return false;

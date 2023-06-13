@@ -31,7 +31,7 @@ namespace RocketLearning.Models
             {
                 // Exemplo de chamada para listar vídeos de um canal
                 var playlistItemsRequest = youtubeService.PlaylistItems.List("snippet");
-                playlistItemsRequest.PlaylistId = "PLYC1mJnsCyOBClheD4cSsuNt59imeMVDI";//"UCDtQdlWCkdveMoSWtCJtzdQ";
+                playlistItemsRequest.PlaylistId = "PLYC1mJnsCyOBClheD4cSsuNt59imeMVDI";
                 playlistItemsRequest.MaxResults = 10;
 
                 var playlistItemsResponse = playlistItemsRequest.Execute();

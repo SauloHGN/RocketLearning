@@ -1,8 +1,11 @@
-﻿@{
+﻿@using RocketLearning.Controllers
+@using RocketLearning.Models
+@using Microsoft.Extensions.DependencyInjection
+@inject DataContext _context
+@{
     ViewData["Title"] = "Perfil";
-
-
-
+    var context = _context;
+    var usuario = PerfilController.ObterUsuario(context, UsuarioController.IdUserAtual);
 
 }
 <!DOCTYPE html>
@@ -27,26 +30,30 @@
             <form method="post" action="/Perfil/UploadFoto" enctype="multipart/form-data">
 
                 @if (TempData["FotoPerfil"] == null || string.IsNullOrEmpty(TempData["FotoPerfil"].ToString()))
-                {
-                    <img class="image" src="http://unsplash.it/36/36?gravity=center" alt="perfil-photo" />
+                {                    
+                     <img class="image" src="http://unsplash.it/36/36?gravity=center" alt="perfil-photo" />         
                 }
                 else
                 {
-                    @if (ViewBag.TipoImagem == "jpeg")
-                    {
+                    @if (TempData["TipoImagem"].ToString().ToLower() == ".jpeg")
+                    {                       
                         <img class="image" src="data:image/jpeg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
                     }
-                    else if (ViewBag.TipoImagem == "png")
-                    {
+                    else if (TempData["TipoImagem"].ToString().ToLower() == ".png")
+                    {                        
                         <img class="image" src="data:image/png;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
                     }
-                    else if (ViewBag.TipoImagem == "svg")
-                    {
-                        <img class="image" src="data:image/svg+xml;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    else if (TempData["TipoImagem"].ToString().ToLower() == ".svg")
+                    {                       
+                        <img class="image" src="data:image/svg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    }
+                    else if (TempData["TipoImagem"].ToString().ToLower() == ".jpg")
+                    {                       
+                        <img class="image" src="data:image/jpg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
                     }
                     else
                     {
-                        <img class="image" src="data:image/jpg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                        <img class="image" src="http://unsplash.it/36/36?gravity=center" alt="perfil-photo" />
                     }
                 }                
                 <a href="#" class="btn-add" id="addBtn"> <img src="~/Resources/icons8-add-48.png" alt="add-icon"></a>           
@@ -212,6 +219,7 @@
             border: 3px solid #d2d6de;
             margin-top: 20px;
             margin-left: 5vw;
+            object-fit: cover;
         }
 
         #perfil-container {

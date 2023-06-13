@@ -4,7 +4,6 @@
     ViewData["Title"] = "Pagina Inicial";
     var controller = new PaginaInicialController();
     var videos = await controller.TesteVideo();
-    //@model List<VideoViewModel>   
 }
 
 <!DOCTYPE html>
@@ -148,7 +147,7 @@
             @foreach (var video in videos)
             {
             <article class="video-container">
-                    <a href="@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="thumbnail" data-duration="11:11">
+                    <a href="@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="thumbnail" data-duration="@video.Tempo">
                         <img class="thumbnail-image" src="@video.ThumbnailUrl" />
                 </a>
                 <div class="video-bottom-section">
@@ -157,11 +156,11 @@
                     </a>
                     <div class="video-details">
                             <a "@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="video-title">@video.Title</a>
-                        <a href="#" class="video-channel-name">Channel Name</a>
+                        <a href="#" class="video-channel-name">Nome do Usuário</a>
                         <div class="video-metadata">
-                            <span>12K views</span>
-                            •
-                            <span>1 week ago</span>
+                            <span>@video.Views visualizações</span>
+                             ⋯
+                            <span>@video.DataPublicacao</span>
                         </div>
                     </div>
                 </div>

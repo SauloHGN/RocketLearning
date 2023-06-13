@@ -3,6 +3,7 @@ using Google.Apis.YouTube.v3;
 using Microsoft.AspNetCore.Mvc;
 using RocketLearning.Models;
 using System.Diagnostics;
+using System.Xml;
 
 namespace RocketLearning.Controllers
 {
@@ -43,12 +44,24 @@ namespace RocketLearning.Controllers
 
             foreach (var playlistItem in playlistItemsListResponse.Items)
             {
+                var videoId = playlistItem.Snippet.ResourceId.VideoId;
+
+                var videoRequest = youtubeService.Videos.List("snippet,statistics,contentDetails");
+                videoRequest.Id = videoId;
+
+                var videoResponse = await videoRequest.ExecuteAsync();
+                var videoInfo = videoResponse.Items.FirstOrDefault();
+
                 var video = new VideoViewModel
                 {
                     VideoId = playlistItem.Snippet.ResourceId.VideoId,
                     Title = playlistItem.Snippet.Title,
                     Description = playlistItem.Snippet.Description,
-                    ThumbnailUrl = playlistItem.Snippet.Thumbnails.Default__.Url
+                    ThumbnailUrl = playlistItem.Snippet.Thumbnails.Default__.Url,
+                    Views = videoInfo?.Statistics.ViewCount.ToString(),
+                    DataPublicacao = videoInfo?.Snippet?.PublishedAt?.ToString("dd/MM/yyyy"),
+                    Tempo = XmlConvert.ToTimeSpan(videoInfo?.ContentDetails?.Duration ?? "PT0S").ToString(@"hh\:mm\:ss")
+
                 };
 
                 videos.Add(video);

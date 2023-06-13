@@ -14,7 +14,7 @@ namespace RocketLearning.Controllers
 {
     public class UsuarioController : Controller
     {
-        public static int? IdUserAtual { get; set; }
+        public static int IdUserAtual { get; set; }
 
         private readonly DataContext _context;
 
