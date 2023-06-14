@@ -53,6 +53,26 @@ namespace RocketLearning.Controllers
             return PartialView("TesteVideo");//retorna tela de Teste Video      
         }
 
+        public IActionResult Busca()
+        {
+            return PartialView("Busca");//retorna tela de busca de video      
+        }
+
+        public IActionResult Sair()
+        {
+            // Limpar cookies, sessão ou qualquer outra ação necessária ao sair
+
+            // Redirecionar para a página inicial
+            Response.Redirect("/");
+
+            // Desabilitar o cache da página
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Expires"] = "0";
+            Response.Headers["Pragma"] = "no-cache";
+
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

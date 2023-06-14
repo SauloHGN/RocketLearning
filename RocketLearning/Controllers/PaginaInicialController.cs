@@ -60,7 +60,7 @@ namespace RocketLearning.Controllers
                     ThumbnailUrl = playlistItem.Snippet.Thumbnails.Default__.Url,
                     Views = videoInfo?.Statistics.ViewCount.ToString(),
                     DataPublicacao = videoInfo?.Snippet?.PublishedAt?.ToString("dd/MM/yyyy"),
-                    Tempo = XmlConvert.ToTimeSpan(videoInfo?.ContentDetails?.Duration ?? "PT0S").ToString(@"hh\:mm\:ss")
+                    Tempo = XmlConvert.ToTimeSpan(videoInfo?.ContentDetails?.Duration ?? "PT0S").ToString(@"mm\:ss")
 
                 };
 
@@ -74,5 +74,25 @@ namespace RocketLearning.Controllers
 
             return videos;
         }
+
+        [HttpPost]
+        [Route("/PaginaInicial/Busca")]
+        public async Task<IActionResult> BuscaPorTitulo()
+        {
+            string busca = Request.Form["textBusca"];
+
+            var videos = await TesteVideo();
+
+            var buscaResults = videos.Where(video => video.Title.Contains(busca)).ToList();
+
+            return ExibirResultadosBusca(buscaResults);
+        }
+
+        public IActionResult ExibirResultadosBusca(List<VideoViewModel> buscaResults)
+        {
+            ViewBag.BuscaResults = buscaResults;
+            return View("~/Views/Home/Busca.cshtml", buscaResults);
+        }
+
     }
 }

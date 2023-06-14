@@ -1,85 +1,35 @@
 ﻿@using RocketLearning.Controllers
-@using RocketLearning.Models
-@using Microsoft.Extensions.DependencyInjection
-@inject DataContext _context
+@model List<VideoViewModel>
 @{
-    ViewData["Title"] = "Perfil";
-    var context = _context;
-    var usuario = PerfilController.ObterUsuario(context, UsuarioController.IdUserAtual);
+    ViewData["Title"] = "Busca";
 
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-    <title>Editar Perfil</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <title>Página Inicial</title>
 </head>
 <body>
-    <!-- inicio conteiner perfil -->
-    <div id="perfil-container">
-        <h1>Editar Perfil</h1>
-
-        <div class="box-primary">
-            <form method="post" action="/Perfil/UploadFoto" enctype="multipart/form-data">
-
-                @if (TempData["FotoPerfil"] == null || string.IsNullOrEmpty(TempData["FotoPerfil"].ToString()))
-                {                    
-                     <img class="image" src="http://unsplash.it/36/36?gravity=center" alt="perfil-photo" />         
-                }
-                else
-                {
-                    @if (TempData["TipoImagem"].ToString().ToLower() == ".jpeg")
-                    {                       
-                        <img class="image" src="data:image/jpeg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
-                    }
-                    else if (TempData["TipoImagem"].ToString().ToLower() == ".png")
-                    {                        
-                        <img class="image" src="data:image/png;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
-                    }
-                    else if (TempData["TipoImagem"].ToString().ToLower() == ".svg")
-                    {                       
-                        <img class="image" src="data:image/svg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
-                    }
-                    else if (TempData["TipoImagem"].ToString().ToLower() == ".jpg")
-                    {                       
-                        <img class="image" src="data:image/jpg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
-                    }
-                    else
-                    {
-                        <img class="image" src="http://unsplash.it/36/36?gravity=center" alt="perfil-photo" />
-                    }
-                }                
-                <a href="#" class="btn-add" id="addBtn"> <img src="~/Resources/icons8-add-48.png" alt="add-icon"></a>           
-                <input type="file" id="fileInput" name="file" style="display: none;"/>     
-                <input type="submit" name="submitBtn" id="submitBtn" style="display: none">
-            </form>
-        </div>
-        <form method="post" action="/Perfil/Editar">
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" autocomplete="off" value="@TempData["Nome"]">
-            </div>
-            <div class="form-group">
-                <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" autocomplete="off" value="@TempData["Email"]">
-            </div>
-            <div class="form-group">
-                <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" name="telefone" autocomplete="off" class="form-control" onkeypress="$(this).mask('(00) 00000-0009')" value="@TempData["Telefone"]">
-            </div>
-
-            <input type="submit" value="Editar">
+    <!-- barra superior -->
+    <header class="header">
+        <form method="post" action="/PaginaInicial/Busca" class="search-bar">
+            <input class="search-input" name="textBusca" id="search-input" type="text" placeholder="Search" aria-label="Search" />
+            <button type="submit" class="search-btn">
+                <img src="~/Resources/icons8-search-24.png">
+            </button>
         </form>
-    </div>
-    <!-- final conteiner perfil -->
-    <!-- barra lateral -->
+        <div class="menu-icons">
+        </div>
+    </header>
+    <!-- fim barra superior -->
+    <!-- inicio barra lateral  -->
+
     <div class="sidebar close">
         <div class="logo-details">
             <img src="~/Resources/logo.png" alt="logo" class="imagem-logo">
@@ -171,7 +121,7 @@
             </li>
             <li>
 
-                <a href="#">
+                <a a asp-controller="Perfil" asp-action="Perfil">
                     <div class="profile-details">
                         <div class="profile-content">
                             <img src="http://unsplash.it/36/36?gravity=center" alt="profileImg">
@@ -184,106 +134,298 @@
     </ul>
     </div>
 
-    <!-- fim barra lateral -->
 
+
+    <!-- Fim barra lateral -->
+    <!-- video -->
+    <div class="videos">
+        <section class="video-section">
+
+            @if (Model != null && Model.Count > 0)
+            {
+                @try
+                {
+                    @foreach (var video in Model)
+                    {
+                        <article class="video-container">
+                            <a href="@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="thumbnail" data-duration="@video.Tempo">
+                                <img class="thumbnail-image" src="@video.ThumbnailUrl" />
+                            </a>
+                            <div class="video-bottom-section">
+                                <a href="#">
+                                    <img class="channel-icon" src="http://unsplash.it/36/36?gravity=center" />
+                                </a>
+                                <div class="video-details">
+                                    <a "@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="video-title">@video.Title</a>
+                                    <a href="#" class="video-channel-name">Nome do Usuário</a>
+                                    <div class="video-metadata">
+                                        <span>@video.Views visualizações</span>
+                                        ⋯
+                                        <span>@video.DataPublicacao</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                }
+                catch
+                {
+                    <div class="mensagem-nao-encontrado">
+                        <p class="naoEncontrado" id="naoEncontrado">
+                            Nenhum vídeo encontrado.
+                        </p>
+                    </div>
+                }
+                
+            }
+            else
+            {
+                <div class="mensagem-nao-encontrado">
+                        <p class="naoEncontrado" id="naoEncontrado">
+                            Nenhum vídeo encontrado.
+                        </p>
+                    </div>         
+            }
+          
+
+        </section>
+    </div>
+    <!-- fim video -->
+    <!-- CODIGO CSS -->
     <style>
 
-
-        /* inicio conteiner perfil */
-        * {
-            margin: 0;
-            padding: 0;
+        *, *::before, *::after {
             box-sizing: border-box;
-            font-family: Helvetica;
-            border: none;
-            color: #ececec;
+            font-family: Helvetica, sans-serif;
         }
 
         body {
+            margin: 0;
             background-color: #292b2f;
         }
 
-        .container {
-            margin: 0 auto;
-            display: table;
+        .video-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 3rem 1rem;
+            padding: 2rem 0;
+            margin: 0 9rem;
+            margin-right: 1rem;
+            border-top: 4px solid #CCC;
         }
 
-        .image {
-            margin: 0 auto;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 1px solid gray;
-            display: inline-block;
-            padding: 3px;
-            border: 3px solid #d2d6de;
-            margin-top: 20px;
-            margin-left: 5vw;
+            .video-section:first-child {
+                border-top: none;
+            }
+
+        .video-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .thumbnail {
+            position: relative;
+            display: flex;
+        }
+
+            .thumbnail::before {
+                content: attr(data-duration);
+                position: absolute;
+                background-color: rgba(0, 0, 0, .85);
+                color: white;
+                right: 5px;
+                bottom: 5px;
+                padding: .1em .3em;
+                border-radius: .3em;
+                font-size: .9rem;
+            }
+
+        .thumbnail-image {
+            height: 100%;
+            width: 100%;
+            min-width: 290px;
+            min-height: 175px;
+            max-width: 290px;
+            max-height: 175px;
             object-fit: cover;
-        }
-
-        #perfil-container {
-            background-color: #202225;
-            margin-left: auto;
-            margin-right: auto;
-            width: 600px;
-            padding: 20px 30px;
-            margin-top: 5vh;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0px 10px 40px #1b1b1b;
-            color: white;
-        }
-
-        input {
-            margin-left: auto;
-            margin-right: auto;
-            border-bottom: 3px solid #323232;
-            padding: 10px;
-            font-size: 1rem;
-            margin-top: 5px;
-            margin-bottom: 20px;
+            background-color: #AAA;
             border-radius: 5px;
+            position: center;
+        }
+
+        .video-bottom-section {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 1rem;
+        }
+
+        .channel-icon {
+            margin-right: .75rem;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            background-color: #AAA;
+        }
+
+        .video-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: .5rem;
+            text-decoration: none;
+            color: whitesmoke;
+        }
+
+        .video-channel-name {
+            margin-bottom: .1rem;
+            text-decoration: none;
+            transition: color 150ms;
+        }
+
+            .video-channel-name:hover {
+                color: #ffff;
+            }
+
+        .video-channel-name,
+        .video-metadata {
+            color: #c2bebe;
+        }
+
+        .video-section-title {
+            grid-column: 1 / -1;
+            margin: -.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 .5rem;
+        }
+
+        .video-section-title-close {
+            border: none;
+            background: none;
+            padding: 0;
+            font-size: 2rem;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .videos {
+            background-color: #292b2f;
+        }
+
+        .categories {
+            padding: 1rem 2rem;
+            border-top: 1px solid #999;
+            border-bottom: 1px solid #999;
+        }
+
+        .category-section {
+            display: flex;
+            overflow: hidden;
             background-color: #202225;
         }
 
-            textarea:focus, input:focus {
+        .category {
+            margin-right: 1rem;
+            word-wrap: none;
+            white-space: nowrap;
+            border: 1px solid #CCC;
+            border-radius: 900px;
+            background-color: #E7E7E7;
+            padding: .5rem 1rem;
+            font-size: inherit;
+            cursor: pointer;
+            transition: background-color 150ms;
+        }
+
+            .category:hover {
+                background-color: #202225;
+            }
+
+            .category.active {
+                background-color: #202225;
+                color: white;
+                border-color: #EEE;
+            }
+
+            .category:last-child {
+                margin-right: 0;
+            }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #202225;
+        }
+
+        .search-bar {
+            display: flex;
+            flex-grow: 1;
+            margin: 0 2rem 0 4rem;
+        }
+
+        .search-input::placeholder {
+            color: #EEE;
+        }
+
+        .search-input {
+            margin-left: 15vw;
+            width: 60%;
+            height: 40px;
+            font-size: inherit;
+            padding: .9em;
+            border: 1px solid #999797;
+            background-color: #202225;
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            color: #ffff;
+        }
+
+            .search-input:focus {
+                border-color: #208888;
                 outline: none;
             }
 
-            input:focus {
-                border-bottom: 3px solid #1eb9b9;
-            }
-
-            input[type="submit"] {
-                margin-left: 2vw;
-                text-align: center;
-                text-transform: uppercase;
-                border: none;
-                height: 40px;
-                border-radius: 20px;
-                margin-top: 30px;
-                cursor: pointer;
-                color: #1B223C;
-                background-color: #1eb9b9;
-                font-weight: bold;
-            }
-
-                input[type="submit"]:hover {
-                    background-color: #208888;
-                    transition: .5s;
-                }
-
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="nome"],
-        .form-group input[type="telefone"] {
-            width: 250px;
+        .search-btn {
+            display: flex;
+            align-items: center;
+            padding: 0 1.25rem;
+            border: 1px solid #999797;
+            background-color: #202225;
+            border-left: none;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            cursor: pointer;
         }
 
-        /* final conteiner perfil */
+            .search-btn:hover {
+                /* background-color: #ffff; */
+                border-color: #208888;
+            }
 
-        /* inicio barra lateral sidebar */
+        .menu-icons {
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .menu-channel-icon {
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            background-color: #202225;
+        }
+
+        /* inicio sidebar */
+
         * {
             margin: 0;
             padding: 0;
@@ -499,19 +641,29 @@
 
         /* fim side bar */
 
+        .mensagem-nao-encontrado {
+            position: absolute;
+            top: -25vh;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .naoEncontrado{
+            font-family:Helvetica, sans-serif;
+            color:#ffff;
+            font-size:26px;
+            font-weight: bold;
+            display: block;
+            text-align: center; 
+            height: 100px; /* Defina a altura desejada */
+            line-height: 100px; /* Igual à altura para centralizar verticalmente */
+
+        }
 
     </style>
-
-    <script>
-        document.getElementById('addBtn').addEventListener('click', function (e) {
-            e.preventDefault();
-            document.getElementById('fileInput').click();
-        });
-
-        document.getElementById('fileInput').addEventListener('change', function (e) {
-            document.getElementById('submitBtn').click();
-        });
-    </script>
 
 </body>
 </html>

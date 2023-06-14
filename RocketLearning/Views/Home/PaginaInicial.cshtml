@@ -20,11 +20,10 @@
 <body>
     <!-- barra superior -->
     <header class="header">
-        <form class="search-bar">
-            <input class="search-input" placeholder="Search" aria-label="Search" />
+        <form method="post" action="/PaginaInicial/Busca" class="search-bar">
+            <input class="search-input" name="textBusca" id="search-input" type="text" placeholder="Search" aria-label="Search" autocomplete="off" />
             <button type="submit" class="search-btn">
                 <img src="~/Resources/icons8-search-24.png">
-
             </button>
         </form>
         <div class="menu-icons">
@@ -109,20 +108,22 @@
                 </ul>
             </li>
 
-            <li>              
+
+            <li>
                 <a>
                     <i class="sidebar-icons">
-                        <img src="~/Resources/icons8-settings-24.png" alt="config-image" class="config-image">
+                        <img src="~/Resources/icons8-sair-24a.png" alt="config-image" class="config-image">
                     </i>
 
-
-                    <span class="link_name">Configurações</span>
+                    <span class="link_name">Sair</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name">Configurações</a></li>
-                </ul>             
+                    <li><a class="link_name">Sair</a></li>
+                </ul>
             </li>
             <li>
+
+      
 
                 <a a asp-controller="Perfil" asp-action="Perfil">
                     <div class="profile-details">

@@ -141,13 +141,13 @@ namespace RocketLearning.Controllers
             return RedirectToAction("Index", "Home");     
         }
 
-        /*public  int ObterIdUsuario(int idUsuario)
+        public  int ObterIdUsuario(int idUsuario)
         {
             int IdUserAtual = idUsuario;
             // Lógica para obter o ID do usuário
             Debug.WriteLine("ID de retorno = " + idUsuario);
             return IdUserAtual; // Substitua pelo valor correto
-        }*/
+        }
 
         private bool VerificarSenha(string senha, string senhaCriptografada)
         {
@@ -158,6 +158,7 @@ namespace RocketLearning.Controllers
             return StringComparer.OrdinalIgnoreCase.Equals(senhaCriptografada, senhaCriptografadaUsuario);
         }
         // FIM LOGICA LOGIN
+
         public IActionResult EsqueciMinhaSenha()
         {
             string email = Request.Form["email"];

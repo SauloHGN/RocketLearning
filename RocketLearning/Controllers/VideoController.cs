@@ -117,14 +117,14 @@ namespace RocketLearning.Controllers
 
         }
 
-        // Manipulador de evento para receber a resposta após o upload
+        // Manipulador para o upload
         private void VideoInsertRequest_ResponseReceived(Google.Apis.YouTube.v3.Data.Video video)
         {
             Console.WriteLine("Upload em andamento: " + video.Status.UploadStatus);
             Debug.WriteLine("Video enviado com sucesso!");
             Debug.WriteLine("ID do vídeo: " + video.Id);
             Debug.WriteLine("Título do vídeo: " + video.Snippet.Title);
-            // Outras informações sobre o vídeo, se necessário
+            //informações sobre o vídeo
         }
     }  
 }
