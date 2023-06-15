@@ -110,7 +110,7 @@
 
 
             <li>
-                <a>
+                <a a asp-controller="Home" asp-action="Sair">
                     <i class="sidebar-icons">
                         <img src="~/Resources/icons8-sair-24a.png" alt="config-image" class="config-image">
                     </i>
@@ -118,7 +118,7 @@
                     <span class="link_name">Sair</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name">Sair</a></li>
+                    <li><a a asp-controller="Home" asp-action="Sair" class="link_name">Sair</a></li>
                 </ul>
             </li>
             <li>
@@ -221,13 +221,11 @@
                 font-size: .9rem;
             }
 
-        .thumbnail-image {    
-            height: 100%;
-            width: 100%;
-            min-width: 290px;
-            min-height: 175px;          
-            max-width: 290px;
-            max-height:175px;
+        .thumbnail-image {              
+            height: 175px;
+            width: 290px;
+            background-repeat: no-repeat;
+            background-position: center;
             object-fit: cover;
             background-color: #AAA;
             border-radius: 5px;

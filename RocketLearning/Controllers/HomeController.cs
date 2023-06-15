@@ -58,11 +58,9 @@ namespace RocketLearning.Controllers
             return PartialView("Busca");//retorna tela de busca de video      
         }
 
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Sair()
         {
-            // Limpar cookies, sessão ou qualquer outra ação necessária ao sair
-
-            // Redirecionar para a página inicial
             Response.Redirect("/");
 
             // Desabilitar o cache da página
@@ -70,7 +68,8 @@ namespace RocketLearning.Controllers
             Response.Headers["Expires"] = "0";
             Response.Headers["Pragma"] = "no-cache";
 
-            return View();
+
+            return PartialView("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

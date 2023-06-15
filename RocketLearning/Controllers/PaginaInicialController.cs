@@ -36,7 +36,7 @@ namespace RocketLearning.Controllers
 
             var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
             playlistItemsListRequest.PlaylistId = "PLYC1mJnsCyOBClheD4cSsuNt59imeMVDI";
-            playlistItemsListRequest.MaxResults = 5;
+            playlistItemsListRequest.MaxResults = 50;
 
             var playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
 
