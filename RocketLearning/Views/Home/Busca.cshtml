@@ -19,7 +19,7 @@
     <!-- barra superior -->
     <header class="header">
         <form method="post" action="/PaginaInicial/Busca" class="search-bar">
-            <input class="search-input" name="textBusca" id="search-input" type="text" placeholder="Search" aria-label="Search" />
+            <input class="search-input" name="textBusca" id="search-input" type="text" placeholder="Search" aria-label="Search" autocomplete="off" />
             <button type="submit" class="search-btn">
                 <img src="~/Resources/icons8-search-24.png">
             </button>
@@ -106,17 +106,17 @@
                 </ul>
             </li>
 
+
             <li>
-                <a>
+                <a a asp-controller="Home" asp-action="Sair">
                     <i class="sidebar-icons">
                         <img src="~/Resources/icons8-sair-24a.png" alt="config-image" class="config-image">
                     </i>
 
-
                     <span class="link_name">Sair</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name">Sair</a></li>
+                    <li><a a asp-controller="Home" asp-action="Sair" class="link_name">Sair</a></li>
                 </ul>
             </li>
             <li>
@@ -643,14 +643,14 @@
 
         .mensagem-nao-encontrado {
             position: absolute;
-            top: -25vh;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         .naoEncontrado{
             font-family:Helvetica, sans-serif;
             color:#ffff;
@@ -658,9 +658,7 @@
             font-weight: bold;
             display: block;
             text-align: center; 
-            height: 100px; /* Defina a altura desejada */
-            line-height: 100px; /* Igual à altura para centralizar verticalmente */
-
+            height: 25px; 
         }
 
     </style>

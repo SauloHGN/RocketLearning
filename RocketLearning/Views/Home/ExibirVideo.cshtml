@@ -111,6 +111,43 @@
     </style>
     <!-- Final Player Video-->
 
+    
+    <!-- INICIO COMENTARIOS-->
+    <div class="row">
+
+        <div class="_details_review">
+
+            <div class="section-title">
+                <h5>Comentários</h5>
+            </div>
+
+            <div class="__review__item">
+                <div class="__review__item__pic">
+                    <img src="~/Resources/astronauta.gif" alt="">
+                </div>
+                <div class="__review__item__text">
+                    <h6>By Saulo - <span>15/06/2023</span> <span> <img src="~/Resources/icons8-excluir-24.png" class="imagem_excluir"></span> </h6>
+                    <p>
+                        É a primeira vez que tenho a experiência de programar assistindo alguém
+                        logado em várias contas com Hack no Roblox.
+                    </p>
+                </div>
+            </div>
+
+            <div class="__details__form">
+                <div class="section-title">
+                    <h5>Seu Comentário</h5>
+                </div>
+                <form action="#">
+                    <textarea placeholder="Digite seu comentário"></textarea>
+                    <button type="submit"><i class="fa fa-location-arrow"></i> Publicar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!---FIM COMENTARIOS->
+
+
     <!-- inicio barra lateral  -->
 
     <div class="sidebar close">
@@ -217,7 +254,6 @@
     </div>
     <!-- Fim barra lateral -->
 
-    <!-- -->
 
     <style>
 
@@ -437,6 +473,219 @@
         }
 
         /* fim side bar */
+
+        /*Inicio comentarios*/
+
+        .row {
+            margin-top:30px;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+            position: relative;
+            width: 100%;
+            margin-left: 1vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        ._details_review {
+            margin-bottom: 55px;
+        }
+
+
+        .__review__item {
+            overflow: auto;
+            max-width: 700px;
+            margin-bottom: 25px;
+        }
+
+        *, ::after, ::before {
+            box-sizing: border-box;
+        }
+
+        body {
+           height: 100%;
+            font-family: Helvetica, sans-serif;       
+            background: #292b2f;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            text-align: left;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden
+        }
+
+        .__review__item__pic {
+            float: left;
+            margin-right: 20px;
+            position: relative;
+        }
+
+            .__review__item__pic img {
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+            }
+
+        img {
+            max-width: 100%;
+            vertical-align: middle;
+            border-style: none;
+            overflow: clip;
+        }
+
+        .__review__item__pic:before {
+            position: absolute;
+            right: -30px;
+            top: 15px;
+            border-top: 15px solid transparent;
+            border-left: 15px solid #202225;
+            content: "";
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .__review__item__text {
+            overflow: hidden;
+            background: #202225;
+            padding: 18px 30px 16px 20px;
+            border-radius: 10px;
+        }
+
+            .__review__item__text h6 {
+                color: #ffffff;
+                font-weight: 700;
+                margin-bottom: 10px;
+            }
+
+        h6 {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.2;
+        }
+
+        .__review__item__text h6 span {
+            color: #b7b7b7;
+            font-weight: 400;
+        }
+
+        .imagem_excluir {
+            display: relative;
+            padding-left: 1vw;
+        }
+
+        .__review__item__text p {
+            color: #b7b7b7;
+            line-height: 23px;
+            margin-bottom: 0;
+        }
+
+        p {
+            font-size: 15px;
+            margin: 0 0 15px 0;
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+        }
+
+
+        /*  */
+        .section-title {
+            margin-bottom: 30px;
+        }
+
+            .section-title h5 {
+                color: #ffffff;
+                font-weight: 600;
+                line-height: 21px;
+                text-transform: uppercase;
+                padding-left: 20px;
+                position: relative;
+                font-family: Helvetica, sans-serif;
+            }
+
+                .section-title h5:after {
+                    position: absolute;
+                    left: 0;
+                    top: -6px;
+                    height: 32px;
+                    width: 4px;
+                    background: #1eb9b9;
+                    content: "";
+                }
+
+        .__details__form form textarea {
+            width: 100%;
+            font-size: 15px;
+            background-color: #202225;
+            color: #8f8989;
+            padding-left: 20px;
+            padding-top: 12px;
+            height: 110px;
+            border: none;
+            border-radius: 5px;
+            resize: none;
+            margin-bottom: 24px;
+        }
+
+        textarea {
+            overflow: auto;
+            resize: vertical;
+        }
+
+        textarea {
+            writing-mode: horizontal-tb !important;
+            text-rendering: auto;
+            letter-spacing: normal;
+            word-spacing: normal;
+            line-height: normal;
+            text-transform: none;
+            text-indent: 0px;
+            text-shadow: none;
+            display: inline-block;
+            text-align: start;
+            appearance: auto;
+            -webkit-rtl-ordering: logical;
+            resize: auto;
+            cursor: text;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            column-count: initial !important;
+            margin: 0em;
+            padding: 2px;
+        }
+
+        .__details__form form button {
+            font-size: 11px;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: #1eb9b9;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+            .__details__form form button:hover {
+                background-color: #208888;
+            }
+
+        button, input {
+            overflow: visible;
+        }
+
+        /*Fim comentarios*/
 
     </style>
 

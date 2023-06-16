@@ -149,7 +149,7 @@
             {
             <article class="video-container">
                     <a href="@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="thumbnail" data-duration="@video.Tempo">
-                        <img class="thumbnail-image" src="@video.ThumbnailUrl" />
+                        <img class="thumbnail-image" src="https://i.ytimg.com/vi/@(video.VideoId)/hqdefault.jpg" />
                 </a>
                 <div class="video-bottom-section">
                     <a href="#">
@@ -222,7 +222,7 @@
             }
 
         .thumbnail-image {              
-            height: 175px;
+            height: 185px;
             width: 290px;
             background-repeat: no-repeat;
             background-position: center;
