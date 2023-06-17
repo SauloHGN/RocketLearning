@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using MySql.Data.MySqlClient;
 using RocketLearning.Models;
 
@@ -15,14 +16,53 @@ namespace RocketLearning.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public IActionResult Create(Comentario comentario)
+        [HttpGet]
+        [Route("/Comentario/GetAll")]
+        public IActionResult GetAll()
         {
-            // Adicione a lógica para criar um novo comentário no banco de dados
+            var comentarios = _context.Comentarios.ToList();
+            return PartialView("_CommentList", comentarios);
+        }
+
+        [HttpPost]
+        [Route("/Comentario/Create")]
+        public IActionResult Create(Comentario comentario, string idVideo)
+        {
+            //lógica para criar um novo comentário no banco de dados
+          int autorID = UsuarioController.IdUserAtual;
+            string videoID = idVideo;
+            var usuario = _context.Set<Usuarios>().FirstOrDefault(u => u.Id == autorID);
+            if (usuario == null)
+            {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            string autorNome = usuario.Nome;      
+            string text = Request.Form["textComentario"];               
+            DateTime dataAtual = DateTime.Now;
+            string data = dataAtual.ToString("dd/MM/yy");
+
+            if(string.IsNullOrEmpty(text))
+            {
+                throw new ArgumentException("O campo de comentario não pode estár vazio", nameof(text));
+            }
+
+            comentario.AutorID = autorID;
+            comentario.VideoID = videoID;
+            comentario.AutorNome = autorNome;
+            comentario.Text = text;
+            comentario.Data = data;
+
             _context.Comentarios.Add(comentario);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            var comentarios = _context.Comentarios.ToList();
+            return Json(new
+            {
+                comentario.AutorNome,
+                comentario.Data,
+                comentario.Text
+            });
         }
 
         [HttpPost]
@@ -42,11 +82,21 @@ namespace RocketLearning.Controllers
             var comentario = _context.Comentarios.Find(id);
             if (comentario != null)
             {
-                _context.Comentarios.Remove(comentario);
-                _context.SaveChanges();
+                try
+                {
+                    _context.Entry(comentario).Reload(); // Recarrega a entidade do banco de dados
+                    _context.Comentarios.Remove(comentario);
+                    _context.SaveChanges();
+                    return Json(new { success = true });
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {             
+                    Console.WriteLine("Erro de concorrência: " + ex.Message);
+                    return Json(new { success = false, error = "Erro de concorrência" });
+                }
             }
 
-            return RedirectToAction("Index", "Home");
+            return Json(new { success = false });
         }
     }
 }

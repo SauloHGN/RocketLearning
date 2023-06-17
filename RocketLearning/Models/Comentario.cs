@@ -15,7 +15,7 @@ namespace RocketLearning.Models
         public string? VideoID { get; set; }
 
         [Column("autorNome")]
-        public string? AutorNome { get; set; }
+        public string AutorNome { get; set; }
 
         [Column("texto")]
         public string? Text { get; set; }

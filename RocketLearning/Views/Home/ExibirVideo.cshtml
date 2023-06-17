@@ -1,5 +1,8 @@
-﻿@{
+﻿@inject DataContext _context
+@using RocketLearning.Controllers
+@{
     ViewData["Title"] = "Exibir Vídeo";
+    var Coments = _context.Comentarios.ToList();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="path/to/plyr.css">
 </head>
 <body>
@@ -30,7 +34,7 @@
                     options: [720, 480, 360] // Definir opções de qualidade
                 },
                 youtube: { 
-                    autoplay: 1,
+                    autoplay: 0,
                     controls: 0,
                     statechange: 1,
                     autohide: 2,
@@ -113,13 +117,14 @@
 
     
     <!-- INICIO COMENTARIOS-->
-    <div class="row">
+    <div class="row" id="comment-list">
 
         <div class="_details_review">
 
             <div class="section-title">
                 <h5>Comentários</h5>
             </div>
+
 
             <div class="__review__item">
                 <div class="__review__item__pic">
@@ -134,13 +139,50 @@
                 </div>
             </div>
 
+
+            @if(Coments != null && Coments.Count > 0)
+            {
+                @foreach (var comentario in Coments)
+                {
+                    if (comentario.VideoID == ViewBag.VideoId)
+                    {
+                         <div class="__review__item">
+                        <div class="__review__item__pic">
+                            <img src="~/Resources/astronauta.gif" alt="">
+                        </div>
+                        <div class="__review__item__text">
+                            <h6>@comentario.AutorNome - <span>@comentario.Data</span>
+                                    @if (comentario.AutorID == UsuarioController.IdUserAtual)
+                                    {
+                                        <form action="@Url.Action("Delete", "Comentario")" method="post" class="delete-form">
+                                            <a a asp-controller="Comentario" asp-action="Delete" class="delete-button">
+                                                <input style="display: none;" name="id" value="@comentario.ComentarioID" />
+                                                <span class="delete-button">
+                                                    <img src="~/Resources/icons8-excluir-24.png" class="imagem_excluir">
+                                                </span>
+                                            </a>
+                                        </form>
+                                    }
+                             </h6>
+                            <p>
+                                @comentario.Text
+                            </p>
+                        </div>
+                    </div>
+                    }                
+                }
+            }
+
+            
+
             <div class="__details__form">
                 <div class="section-title">
                     <h5>Seu Comentário</h5>
                 </div>
-                <form action="#">
-                    <textarea placeholder="Digite seu comentário"></textarea>
+                <form method="post" action="/Comentario/Create" id="comment-form">
+                    <textarea placeholder="Digite seu comentário" class="textComentario" name="textComentario"></textarea>
                     <button type="submit"><i class="fa fa-location-arrow"></i> Publicar</button>
+                    <input type="hidden" name="idVideo" value="@ViewBag.VideoID" />
                 </form>
             </div>
         </div>
@@ -577,10 +619,10 @@
             font-weight: 400;
         }
 
-        .imagem_excluir {
+        /*.imagem_excluir {
             display: relative;
             padding-left: 1vw;
-        }
+        }*/
 
         .__review__item__text p {
             color: #b7b7b7;
@@ -688,6 +730,99 @@
         /*Fim comentarios*/
 
     </style>
+
+
+    <!-- INICIO ATUALIZAR COMENTARIOS -->
+    <script>
+        // Função para atualizar os comentários
+        function atualizarComentarios() {
+            $.ajax({
+                url: '/Comentario/GetAll', // URL para Att os comentários
+                method: 'GET',
+                success: function (response) {
+                    // Limpar a lista de comentários
+                    $('#comment-list .__review__item').not(':first-child').remove();
+
+                    // Adicionar os novos comentários na lista
+                    response.forEach(function (comment) {
+                        var commentElement = createCommentElement(comment);
+                        $('#comment-list').append(commentElement);
+                    });
+                },
+                error: function () {
+                    console.error('Erro ao obter os comentários.');
+                }
+            });
+        }
+
+        // Função para criar o elemento HTML de um comentário
+        function createCommentElement(commentData) {
+            var commentElement = $('<div class="__review__item"></div>');
+            commentElement.append('<div class="__review__item__pic"><img src="~/Resources/astronauta.gif" alt=""></div>');
+            commentElement.append('<div class="__review__item__text">' +
+                '<h6>' + commentData.autorNome + ' - <span>' + commentData.data + '</span></h6>' +
+                '<p>' + commentData.texto + '</p>' +
+                '</div>');
+            return commentElement;
+        }
+
+        // Atualiza os comentários ao carregar a página
+        $(document).ready(function () {
+            atualizarComentarios();
+        });
+
+        // Atualiza os comentários após o envio
+        $('#comment-form').submit(function (e) {
+            e.preventDefault();
+
+            // Envia o formulário via ajax
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function () {
+                    // Limpa o campo de texto do comentário
+                    $('.textComentario').val('');
+
+                    // Atualiza a lista de comentários
+                    atualizarComentarios();
+                    location.reload();
+                },
+                error: function () {
+                    console.error('Erro ao enviar o comentário.');
+                }
+            });
+        });
+
+
+        /* Deletar comentário Reload*/
+
+        $(document).on('click', '.delete-button', function(e) {
+    e.preventDefault();
+    
+    var form = $(this).closest('.delete-form');
+    
+    // Envia a solicitação para excluir o comentário
+    $.ajax({
+        url: form.attr('action'),
+        method: 'POST',
+        data: form.serialize(),
+        success: function(response) {
+            if (response.success) {
+                // Exclusão OK, atualiza a página
+                location.reload();
+            } else {
+                console.error('Erro ao excluir o comentário.');
+            }
+        },
+        error: function() {
+            console.error('Erro ao excluir o comentário.');
+        }
+    });
+});
+
+    </script>
+    <!--- FIM ATUALIZAR COMENTARIOS ->
 
 </body>
 </html>
