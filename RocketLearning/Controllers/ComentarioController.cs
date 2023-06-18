@@ -29,7 +29,7 @@ namespace RocketLearning.Controllers
         public IActionResult Create(Comentario comentario, string idVideo)
         {
             //lógica para criar um novo comentário no banco de dados
-          int autorID = UsuarioController.IdUserAtual;
+            int autorID = UsuarioController.IdUserAtual;
             string videoID = idVideo;
             var usuario = _context.Set<Usuarios>().FirstOrDefault(u => u.Id == autorID);
             if (usuario == null)

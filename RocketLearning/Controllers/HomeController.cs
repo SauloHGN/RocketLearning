@@ -58,6 +58,14 @@ namespace RocketLearning.Controllers
             return PartialView("Busca");//retorna tela de busca de video      
         }
 
+        public IActionResult MaisVistos()
+        {
+            var controller = new PaginaInicialController();
+            var videos = controller.MaisVistos().Result;
+
+            return RedirectToAction("PaginaInicial", videos);
+        }
+
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Sair()
         {

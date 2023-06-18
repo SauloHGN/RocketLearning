@@ -125,21 +125,6 @@
                 <h5>Comentários</h5>
             </div>
 
-
-            <div class="__review__item">
-                <div class="__review__item__pic">
-                    <img src="~/Resources/astronauta.gif" alt="">
-                </div>
-                <div class="__review__item__text">
-                    <h6>By Saulo - <span>15/06/2023</span> <span> <img src="~/Resources/icons8-excluir-24.png" class="imagem_excluir"></span> </h6>
-                    <p>
-                        É a primeira vez que tenho a experiência de programar assistindo alguém
-                        logado em várias contas com Hack no Roblox.
-                    </p>
-                </div>
-            </div>
-
-
             @if(Coments != null && Coments.Count > 0)
             {
                 @foreach (var comentario in Coments)
@@ -151,7 +136,7 @@
                             <img src="~/Resources/astronauta.gif" alt="">
                         </div>
                         <div class="__review__item__text">
-                            <h6>@comentario.AutorNome - <span>@comentario.Data</span>
+                            <h6 class="conteiner-h6">@comentario.AutorNome - <span>@comentario.Data</span>
                                     @if (comentario.AutorID == UsuarioController.IdUserAtual)
                                     {
                                         <form action="@Url.Action("Delete", "Comentario")" method="post" class="delete-form">
@@ -614,16 +599,28 @@
             line-height: 1.2;
         }
 
+        .conteiner-h6{
+            display:flex
+        }
+
         .__review__item__text h6 span {
             color: #b7b7b7;
             font-weight: 400;
         }
 
-        /*.imagem_excluir {
-            display: relative;
-            padding-left: 1vw;
-        }*/
+        .delete-form{
+            margin-left: 5px;
+        }
 
+        .imagem_excluir {
+            width:20px;
+            height:20px;
+        }
+
+        .imagem_excluir:hover{
+                filter: brightness(0) invert(1);
+        }
+        
         .__review__item__text p {
             color: #b7b7b7;
             line-height: 23px;
@@ -638,6 +635,11 @@
             margin-block-end: 1em;
             margin-inline-start: 0px;
             margin-inline-end: 0px;
+        }
+
+        .delete-button{
+            border: 4px;
+            border-color: white;
         }
 
 

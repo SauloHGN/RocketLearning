@@ -2,8 +2,13 @@
 @using RocketLearning.Controllers
 @{
     ViewData["Title"] = "Pagina Inicial";
+    var acao = PaginaInicialController.acao;
     var controller = new PaginaInicialController();
     var videos = await controller.TesteVideo();
+    if(acao == "MaisVistos")
+    {
+        videos = PaginaInicialController.listaVideos;
+    }
 }
 
 <!DOCTYPE html>
@@ -64,7 +69,7 @@
                 <ul class="sub-menu">
                     <li><a class="link_name" href="#">Categorias</a></li>
                     <li><a href="#">Todos</a></li>
-                    <li><a href="#">Mais Vistos</a></li>
+                    <li><a a asp-controller="PaginaInicial" asp-action="MaisVistos" id="btnMaisVistos">Mais Vistos</a></li>
                     <li><a href="#">Recentes</a></li>
                 </ul>
             </li>
@@ -620,6 +625,35 @@
         /* fim side bar */
 
     </style>
+
+    @section Scripts {
+        <script>
+            document.getElementById("btnMaisVistos").addEventListener("click", async function (event) {
+                event.preventDefault(); // Prevenir o comportamento padrão do clique no link
+                await exibirMaisVistos();
+            });
+
+            async function exibirMaisVistos() {
+                try {
+                    const response = await fetch("/PaginaInicial/MaisVistos");
+                    const data = await response.json();
+
+                    if (data.success) {
+                        const videos = data.videos;
+                        // Atualize a página com os vídeos mais vistos
+                        // ...
+                    } else {
+                        // Lidar com o caso de erro
+                        // ...
+                    }
+                } catch (error) {
+                    console.error(error);
+                    // Lidar com o caso de erro
+                    // ...
+                }
+            }
+        </script>
+    }
 
 </body>
 </html>
