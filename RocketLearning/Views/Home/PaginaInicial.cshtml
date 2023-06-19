@@ -7,7 +7,13 @@
     var videos = await controller.TesteVideo();
     if(acao == "MaisVistos")
     {
+        videos.Clear();
         videos = PaginaInicialController.listaVideos;
+    }
+    else if(acao == "MaisRecentes")
+    {
+        videos.Clear();
+        videos = PaginaInicialController.listaVideosRecentes;
     }
 }
 
@@ -68,9 +74,9 @@
                 </div>
                 <ul class="sub-menu">
                     <li><a class="link_name" href="#">Categorias</a></li>
-                    <li><a href="#">Todos</a></li>
+                    <li><a a asp-controller="PaginaInicial" asp-action="ExibirTodos">Todos</a></li>
                     <li><a a asp-controller="PaginaInicial" asp-action="MaisVistos" id="btnMaisVistos">Mais Vistos</a></li>
-                    <li><a href="#">Recentes</a></li>
+                    <li><a a asp-controller="PaginaInicial" asp-action="MaisRecentes">Recentes</a></li>
                 </ul>
             </li>
 
@@ -133,17 +139,14 @@
                 <a a asp-controller="Perfil" asp-action="Perfil">
                     <div class="profile-details">
                         <div class="profile-content">
-                            <img src="http://unsplash.it/36/36?gravity=center" alt="profileImg">
+                            <img src="~/Resources/icons8-user-default-96-cor2.png" alt="profileImg">
+                        </div>
                         </div>
                 </a>
 
-                <i class='bx bx-log-out'></i>
+             </li>
+        </ul>       
     </div>
-    </li>
-    </ul>
-    </div>
-
-
 
     <!-- Fim barra lateral -->
     <!-- video -->
@@ -158,7 +161,7 @@
                 </a>
                 <div class="video-bottom-section">
                     <a href="#">
-                        <img class="channel-icon" src="http://unsplash.it/36/36?gravity=center" />
+                            <img class="channel-icon" src="~/Resources/icons8-user-default-96-cor2.png" />
                     </a>
                     <div class="video-details">
                             <a "@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="video-title">@video.Title</a>
@@ -248,7 +251,7 @@
             border-radius: 50%;
             width: 36px;
             height: 36px;
-            background-color: #AAA;
+            background-color: #1b1b1b;
         }
 
         .video-details {
@@ -315,7 +318,6 @@
 
         .category {
             margin-right: 1rem;
-            word-wrap: none;
             white-space: nowrap;
             border: 1px solid #CCC;
             border-radius: 900px;
@@ -640,6 +642,8 @@
 
                     if (data.success) {
                         const videos = data.videos;
+                        const videosContainer = document.getElementById("videos-container");
+                        videosContainer.innerHTML = ""; // Limpar o conteúdo anterior
                         // Atualize a página com os vídeos mais vistos
                         // ...
                     } else {

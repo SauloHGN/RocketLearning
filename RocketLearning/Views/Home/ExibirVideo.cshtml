@@ -6,15 +6,15 @@
 }
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video</title>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="path/to/plyr.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Video</title>
+        <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="path/to/plyr.css">
+    </head>
 <body>
     <!-- Inicio Player Video-->
 
@@ -270,15 +270,14 @@
                 <a a asp-controller="Perfil" asp-action="Perfil">
                     <div class="profile-details">
                         <div class="profile-content">
-                            <img src="http://unsplash.it/36/36?gravity=center" alt="profileImg">
+                            <img src="~/Resources/icons8-user-default-96-cor2.png" alt="profileImg">
                         </div>
+                    </div>
                 </a>
+            </li>
+        </ul>
+    </div>
 
-                <i class='bx bx-log-out'></i>
-    </div>
-    </li>
-    </ul>
-    </div>
     <!-- Fim barra lateral -->
 
 
@@ -732,99 +731,104 @@
         /*Fim comentarios*/
 
     </style>
+  </body>
 
+<!-- INICIO ATUALIZAR COMENTARIOS -->
+<script>
+    // Função para atualizar os comentários
+    function atualizarComentarios() {
+        $.ajax({
+            url: '/Comentario/GetAll', // URL para Att os comentários
+            method: 'GET',
+            success: function (response) {
+                // Limpar a lista de comentários
+                $('#comment-list .__review__item').not(':first-child').remove();
 
-    <!-- INICIO ATUALIZAR COMENTARIOS -->
-    <script>
-        // Função para atualizar os comentários
-        function atualizarComentarios() {
-            $.ajax({
-                url: '/Comentario/GetAll', // URL para Att os comentários
-                method: 'GET',
-                success: function (response) {
-                    // Limpar a lista de comentários
-                    $('#comment-list .__review__item').not(':first-child').remove();
-
-                    // Adicionar os novos comentários na lista
-                    response.forEach(function (comment) {
-                        var commentElement = createCommentElement(comment);
-                        $('#comment-list').append(commentElement);
-                    });
-                },
-                error: function () {
-                    console.error('Erro ao obter os comentários.');
-                }
-            });
-        }
-
-        // Função para criar o elemento HTML de um comentário
-        function createCommentElement(commentData) {
-            var commentElement = $('<div class="__review__item"></div>');
-            commentElement.append('<div class="__review__item__pic"><img src="~/Resources/astronauta.gif" alt=""></div>');
-            commentElement.append('<div class="__review__item__text">' +
-                '<h6>' + commentData.autorNome + ' - <span>' + commentData.data + '</span></h6>' +
-                '<p>' + commentData.texto + '</p>' +
-                '</div>');
-            return commentElement;
-        }
-
-        // Atualiza os comentários ao carregar a página
-        $(document).ready(function () {
-            atualizarComentarios();
+                // Adicionar os novos comentários na lista
+                response.forEach(function (comment) {
+                    var commentElement = createCommentElement(comment);
+                    $('#comment-list').append(commentElement);
+                });
+            },
+            error: function () {
+                console.error('Erro ao obter os comentários.');
+            }
         });
+    }
 
-        // Atualiza os comentários após o envio
-        $('#comment-form').submit(function (e) {
-            e.preventDefault();
+    // Função para criar o elemento HTML de um comentário
+    function createCommentElement(commentData) {
+        var commentElement = $('<div class="__review__item"></div>');
+        commentElement.append('<div class="__review__item__pic"><img src="~/Resources/astronauta.gif" alt=""></div>');
+        commentElement.append('<div class="__review__item__text">' +
+            '<h6>' + commentData.autorNome + ' - <span>' + commentData.data + '</span></h6>' +
+            '<p>' + commentData.texto + '</p>' +
+            '</div>');
+        return commentElement;
+    }
 
-            // Envia o formulário via ajax
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data: $(this).serialize(),
-                success: function () {
-                    // Limpa o campo de texto do comentário
-                    $('.textComentario').val('');
+    // Atualiza os comentários ao carregar a página
+    $(document).ready(function () {
+        atualizarComentarios();
+    });
 
-                    // Atualiza a lista de comentários
-                    atualizarComentarios();
-                    location.reload();
-                },
-                error: function () {
-                    console.error('Erro ao enviar o comentário.');
-                }
-            });
-        });
+    // Atualiza os comentários após o envio
+    $('#comment-form').submit(function (e) {
+        e.preventDefault();
 
+        // Envia o formulário via ajax
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function () {
+                // Limpa o campo de texto do comentário
+                $('.textComentario').val('');
 
-        /* Deletar comentário Reload*/
-
-        $(document).on('click', '.delete-button', function(e) {
-    e.preventDefault();
-    
-    var form = $(this).closest('.delete-form');
-    
-    // Envia a solicitação para excluir o comentário
-    $.ajax({
-        url: form.attr('action'),
-        method: 'POST',
-        data: form.serialize(),
-        success: function(response) {
-            if (response.success) {
-                // Exclusão OK, atualiza a página
+                // Atualiza a lista de comentários
+                atualizarComentarios();
                 location.reload();
-            } else {
+            },
+            error: function () {
+                console.error('Erro ao enviar o comentário.');
+            }
+        });
+    });
+
+
+    /* Deletar comentário Reload*/
+
+    $(document).on('click', '.delete-button', function (e) {
+        e.preventDefault();
+
+        var form = $(this).closest('.delete-form');
+
+        // Envia a solicitação para excluir o comentário
+        $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: form.serialize(),
+            success: function (response) {
+                if (response.success) {
+                    // Exclusão OK, atualiza a página
+                    location.reload();
+                } else {
+                    console.error('Erro ao excluir o comentário.');
+                }
+            },
+            error: function () {
                 console.error('Erro ao excluir o comentário.');
             }
-        },
-        error: function() {
-            console.error('Erro ao excluir o comentário.');
-        }
+        });
     });
-});
 
-    </script>
-    <!--- FIM ATUALIZAR COMENTARIOS ->
+</script>
+<!--- FIM ATUALIZAR COMENTARIOS ->
 
-</body>
+
+
+
 </html>
+
+    
+

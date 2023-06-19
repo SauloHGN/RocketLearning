@@ -1,8 +1,8 @@
-﻿using Google.Apis.Drive.v3.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using RocketLearning.Models;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 
 namespace RocketLearning.Controllers
 {
@@ -134,5 +134,7 @@ namespace RocketLearning.Controllers
             }
             return false;
         }
+
+
     }
 }

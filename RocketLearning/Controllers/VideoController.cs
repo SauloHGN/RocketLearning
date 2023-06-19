@@ -29,6 +29,7 @@ namespace RocketLearning.Controllers
 
         [HttpPost]
         [Route("/Upload/Video")]
+        [Obsolete]
         public async Task<IActionResult> UploadVideo()
         {
             var videoFile = Request.Form.Files.GetFile("upload-file");

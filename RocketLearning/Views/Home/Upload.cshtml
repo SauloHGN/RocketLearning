@@ -1,5 +1,16 @@
-﻿@{
+﻿@using RocketLearning.Controllers
+@inject DataContext _context
+@{
     ViewData["Title"] = "Upload";
+    var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == UsuarioController.IdUserAtual);
+    if(usuario.Foto != null)
+    {
+        var foto = usuario.Foto;
+    }
+    else
+    {
+        var foto = "~/Properties/Resources/NomeDaImagem.png";
+    }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -138,14 +149,14 @@
                         <a a asp-controller="Perfil" asp-action="Perfil">
                             <div class="profile-details">
                                 <div class="profile-content">
-                                    <img src="http://unsplash.it/36/36?gravity=center" alt="profileImg">
+                                    <img src="~/Resources/icons8-user-default-96-cor2.png" alt="profileImg">
+                                </div>
                                 </div>
                         </a>
+                     </li>
 
-                        <i class='bx bx-log-out'></i>
+                </ul>
             </div>
-            </li>
-            </ul>
         </div>
 
         <!-- Fim barra lateral -->

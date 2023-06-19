@@ -31,6 +31,7 @@ namespace RocketLearning.Controllers
                 string nome = usuario.Nome;
                 string email = usuario.Email;
                 string telefone = usuario.Telefone;
+                string foto = usuario.Foto;
 
                 return usuario;
             }

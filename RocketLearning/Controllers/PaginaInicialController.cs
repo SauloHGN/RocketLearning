@@ -3,6 +3,7 @@ using Google.Apis.YouTube.v3;
 using Microsoft.AspNetCore.Mvc;
 using RocketLearning.Models;
 using System.Diagnostics;
+using System.Globalization;
 using System.Xml;
 
 namespace RocketLearning.Controllers
@@ -14,6 +15,8 @@ namespace RocketLearning.Controllers
         public static string acao = null;
 
         public static List<VideoViewModel> listaVideos = new List<VideoViewModel>();
+
+        public static List<VideoViewModel> listaVideosRecentes = new List<VideoViewModel>();
 
         public IActionResult ExibirVideo(string videoId)
         {
@@ -73,13 +76,15 @@ namespace RocketLearning.Controllers
                 videos.Add(video);
             }
 
-            foreach(var teste in videos)
-            {
-                Debug.WriteLine("Video "+teste);
-            }
-
-            listaVideos.AddRange(videos);
+            acao = "Todos";
             return videos;
+        }
+
+        public async Task<IActionResult> ExibirTodos()
+        {
+            var videos = await TesteVideo();
+
+            return RedirectToAction("TodosVideos", "Home", videos);
         }
 
         [HttpPost]
@@ -119,6 +124,8 @@ namespace RocketLearning.Controllers
 
             var videos = new List<VideoViewModel>();
             videos.Clear();
+            listaVideos.Clear();
+            listaVideosRecentes.Clear();
 
             foreach (var playlistItem in playlistItemsListResponse.Items)
             {
@@ -145,10 +152,68 @@ namespace RocketLearning.Controllers
                 videos.Add(video);
             }
 
-            videos = videos.OrderByDescending(v => v.Views).ToList();
+            videos = videos.OrderByDescending(v => Convert.ToInt32(v.Views)).ToList();
             acao = "MaisVistos";
+            exibirMaisVistos();
             listaVideos = videos;
             return RedirectToAction("MaisVistos", "Home", videos);
-        }      
+        }    
+        
+        public IActionResult exibirMaisVistos()
+        {
+            return Json(new { success = true});
+        }
+
+
+        [Route("PaginaInicial/MaisRecentes")]
+        public async Task<IActionResult> MaisRecentes()
+        {
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = apiKey,
+                ApplicationName = "Rocket Learning"
+            });
+
+            var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
+            playlistItemsListRequest.PlaylistId = "PLYC1mJnsCyOBClheD4cSsuNt59imeMVDI";
+            playlistItemsListRequest.MaxResults = 50;
+
+            var playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
+
+            var videos = new List<VideoViewModel>();
+            videos.Clear();
+            listaVideos.Clear();
+            listaVideosRecentes.Clear();
+
+            foreach (var playlistItem in playlistItemsListResponse.Items)
+            {
+                var videoId = playlistItem.Snippet.ResourceId.VideoId;
+
+                var videoRequest = youtubeService.Videos.List("snippet,statistics,contentDetails");
+                videoRequest.Id = videoId;
+
+                var videoResponse = await videoRequest.ExecuteAsync();
+                var videoInfo = videoResponse.Items.FirstOrDefault();
+
+                var video = new VideoViewModel
+                {
+                    VideoId = playlistItem.Snippet.ResourceId.VideoId,
+                    Title = playlistItem.Snippet.Title,
+                    Description = playlistItem.Snippet.Description,
+                    ThumbnailUrl = playlistItem.Snippet.Thumbnails.Default__.Url,
+                    Views = videoInfo?.Statistics.ViewCount.ToString(),
+                    DataPublicacao = videoInfo?.Snippet?.PublishedAt?.ToString("dd/MM/yyyy"),
+                    Tempo = XmlConvert.ToTimeSpan(videoInfo?.ContentDetails?.Duration ?? "PT0S").ToString(@"mm\:ss")
+
+                };
+
+                videos.Add(video);
+            }
+
+            videos = videos.OrderByDescending(v => DateTime.ParseExact(v.DataPublicacao, "dd/MM/yyyy", CultureInfo.InvariantCulture)).ToList();
+            acao = "MaisRecentes";
+            listaVideosRecentes = videos;
+            return RedirectToAction("MaisRecentes", "Home", videos);
+        }
     }
 }

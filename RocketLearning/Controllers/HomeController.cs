@@ -66,6 +66,22 @@ namespace RocketLearning.Controllers
             return RedirectToAction("PaginaInicial", videos);
         }
 
+        public IActionResult MaisRecentes()
+        {
+            var controller = new PaginaInicialController();
+            var videos = controller.MaisRecentes().Result;
+
+            return RedirectToAction("PaginaInicial", videos);
+        }
+
+        public IActionResult TodosVideos()
+        {
+            var controller = new PaginaInicialController();
+            var videos = controller.TesteVideo().Result;
+
+            return RedirectToAction("PaginaInicial", videos);
+        }
+
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Sair()
         {
