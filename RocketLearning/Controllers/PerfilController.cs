@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RocketLearning.Models;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats.Png;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 
 namespace RocketLearning.Controllers
 {
     public class PerfilController : Controller
     {
         private readonly DataContext _context;
+        public static string? fotoUser { get; set; }
+        public static string? tipoImagem { get; set; }
 
         public PerfilController(DataContext context)
         {
@@ -101,7 +103,7 @@ namespace RocketLearning.Controllers
                         file.CopyTo(memoryStream);
                         imageData = memoryStream.ToArray();
                         string fotoBase64 = Convert.ToBase64String(imageData);
-                        TempData["FotoPerfil"] = fotoBase64;
+                        fotoUser = fotoBase64;
                         usuario.Foto = fotoBase64;
 
                         _context.SaveChanges();
@@ -130,9 +132,31 @@ namespace RocketLearning.Controllers
                 string[] validExtensions = { ".png", ".jpg", ".jpeg", ".svg" };
                 string fileExtension = Path.GetExtension(file.FileName);
                 TempData["TipoImagem"] = fileExtension;
+                tipoImagem = fileExtension;
                 return validExtensions.Contains(fileExtension.ToLower());
             }
             return false;
+        }
+
+        public static byte[] ConvertToPng(byte[] imageBytes)
+        {
+            using (var image = Image.Load(imageBytes))
+            {
+                using (var outputStream = new MemoryStream())
+                {
+                    image.Save(outputStream, new PngEncoder());
+                    return outputStream.ToArray();
+                }
+            }
+        }
+
+        public static Image ConvertByteArrayToImage(byte[] imageBytes)
+        {
+            using (MemoryStream ms = new MemoryStream(imageBytes))
+            {
+                var image = Image.Load(ms);
+                return image;
+            }
         }
 
 

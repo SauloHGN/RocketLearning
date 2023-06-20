@@ -133,7 +133,7 @@
                     {
                          <div class="__review__item">
                         <div class="__review__item__pic">
-                            <img src="~/Resources/astronauta.gif" alt="">
+                                <!--<img src="~/Resources/astronauta.gif" alt=""> -->
                         </div>
                         <div class="__review__item__text">
                             <h6 class="conteiner-h6">@comentario.AutorNome - <span>@comentario.Data</span>
@@ -270,7 +270,35 @@
                 <a a asp-controller="Perfil" asp-action="Perfil">
                     <div class="profile-details">
                         <div class="profile-content">
-                            <img src="~/Resources/icons8-user-default-96-cor2.png" alt="profileImg">
+
+                            @if (PerfilController.fotoUser == null || string.IsNullOrEmpty(PerfilController.fotoUser.ToString()))
+                            {
+                                <img class="image" src="~/Resources/icons8-user-default-96-cor2.png" alt="perfil-photo" />
+                            }
+                            else
+                            {
+                                @if (PerfilController.tipoImagem.ToString().ToLower() == ".jpeg")
+                                {
+                                    <img class="image" src="data:image/jpeg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".png")
+                                {
+                                    <img class="image" src="data:image/png;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".svg")
+                                {
+                                    <img class="image" src="data:image/svg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".jpg")
+                                {
+                                    <img class="image" src="data:image/jpg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else
+                                {
+                                    <img class="image" src="~/Resources/icons8-user-default-96-cor2.png" alt="perfil-photo" />
+                                }
+                            }
+
                         </div>
                     </div>
                 </a>

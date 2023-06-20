@@ -124,9 +124,37 @@
                 <a a asp-controller="Perfil" asp-action="Perfil">
                     <div class="profile-details">
                         <div class="profile-content">
-                            <img src="~/Resources/icons8-user-default-96-cor2.png" alt="profileImg">
+
+                            @if (PerfilController.fotoUser == null || string.IsNullOrEmpty(PerfilController.fotoUser.ToString()))
+                            {
+                                <img class="image" src="~/Resources/icons8-user-default-96-cor2.png" alt="perfil-photo" />
+                            }
+                            else
+                            {
+                                @if (PerfilController.tipoImagem.ToString().ToLower() == ".jpeg")
+                                {
+                                    <img class="image" src="data:image/jpeg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".png")
+                                {
+                                    <img class="image" src="data:image/png;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".svg")
+                                {
+                                    <img class="image" src="data:image/svg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".jpg")
+                                {
+                                    <img class="image" src="data:image/jpg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else
+                                {
+                                    <img class="image" src="~/Resources/icons8-user-default-96-cor2.png" alt="perfil-photo" />
+                                }
+                            }
+
                         </div>
-                     </div>
+                    </div>
                 </a>
             </li>
         </ul>
@@ -151,7 +179,7 @@
                             </a>
                             <div class="video-bottom-section">
                                 <a href="#">
-                                    <img class="channel-icon" src="http://unsplash.it/36/36?gravity=center" />
+                                    <img class="channel-icon" src="~/Resources/icons8-user-default-96-cor2.png" />
                                 </a>
                                 <div class="video-details">
                                     <a "@Url.Action("ExibirVideo", "PaginaInicial", new { videoId = video.VideoId })" class="video-title">@video.Title</a>

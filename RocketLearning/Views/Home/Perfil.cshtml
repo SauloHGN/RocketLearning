@@ -6,6 +6,10 @@
     ViewData["Title"] = "Perfil";
     var context = _context;
     var usuario = PerfilController.ObterUsuario(context, UsuarioController.IdUserAtual);
+    var foto = ImageHelper.GetImageFromBase64(usuario.Foto);
+    var extensaoFoto = ImageHelper.GetMimeType(usuario.Foto);
+    ViewData["FotoUsuario"] = foto;
+    ViewData["ExtensaoFoto"] = extensaoFoto;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -28,27 +32,27 @@
         <div class="box-primary">
             <form method="post" action="/Perfil/UploadFoto" enctype="multipart/form-data">
 
-                @if (TempData["FotoPerfil"] == null || string.IsNullOrEmpty(TempData["FotoPerfil"].ToString()))
+                @if (PerfilController.fotoUser == null || string.IsNullOrEmpty(PerfilController.fotoUser.ToString()))
                 {                    
-                     <img class="image" src="~/Resources/icons8-user-default-96-cor2.png alt="perfil-photo" />         
+                     <img class="image" src="~/Resources/icons8-user-default-96-cor2.png" alt="perfil-photo" />         
                 }
                 else
                 {
-                    @if (TempData["TipoImagem"].ToString().ToLower() == ".jpeg")
-                    {                       
-                        <img class="image" src="data:image/jpeg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    @if (PerfilController.tipoImagem.ToString().ToLower() == ".jpeg")
+                    {
+                        <img class="image" src="data:image/jpeg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
                     }
-                    else if (TempData["TipoImagem"].ToString().ToLower() == ".png")
-                    {                        
-                        <img class="image" src="data:image/png;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    else if (PerfilController.tipoImagem.ToString().ToLower() == ".png")
+                    {
+                        <img class="image" src="data:image/png;base64,@PerfilController.fotoUser" alt="perfil-photo" />
                     }
-                    else if (TempData["TipoImagem"].ToString().ToLower() == ".svg")
-                    {                       
-                        <img class="image" src="data:image/svg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    else if (PerfilController.tipoImagem.ToString().ToLower() == ".svg")
+                    {
+                        <img class="image" src="data:image/svg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
                     }
-                    else if (TempData["TipoImagem"].ToString().ToLower() == ".jpg")
-                    {                       
-                        <img class="image" src="data:image/jpg;base64,@TempData["FotoPerfil"]" alt="perfil-photo" />
+                    else if (PerfilController.tipoImagem.ToString().ToLower() == ".jpg")
+                    {
+                        <img class="image" src="data:image/jpg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
                     }
                     else
                     {
@@ -169,12 +173,40 @@
             </li>
             <li>
 
-
+                
                     <a href="#">
                         <div class="profile-details">
                             <div class="profile-content">
-                                <img src="~/Resources/icons8-user-default-96-cor2.png" alt="profileImg">
-                            </div>
+
+                            @if (PerfilController.fotoUser == null || string.IsNullOrEmpty(PerfilController.fotoUser.ToString()))
+                            {
+                                <img class="image" src="~/Resources/icons8-user-default-96-cor2.png" alt="perfil-photo" />
+                            }
+                            else
+                            {
+                                @if (PerfilController.tipoImagem.ToString().ToLower() == ".jpeg")
+                                {
+                                    <img class="image" src="data:image/jpeg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".png")
+                                {
+                                    <img class="image" src="data:image/png;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".svg")
+                                {
+                                    <img class="image" src="data:image/svg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else if (PerfilController.tipoImagem.ToString().ToLower() == ".jpg")
+                                {
+                                    <img class="image" src="data:image/jpg;base64,@PerfilController.fotoUser" alt="perfil-photo" />
+                                }
+                                else
+                                {
+                                    <img class="image" src="~/Resources/icons8-user-default-96-cor2.png" alt="perfil-photo" />
+                                }
+                            }
+
+                        </div>
                         </div>
                     </a>
 

@@ -5,9 +5,12 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
-using System.Reflection.PortableExecutable;
+using SixLabors.ImageSharp.Formats.Png;
 using System.Security.Cryptography;
 using System.Text;
+using SixLabors.ImageSharp.Formats;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 
 namespace RocketLearning.Controllers
@@ -15,6 +18,7 @@ namespace RocketLearning.Controllers
     public class UsuarioController : Controller
     {
         public static int IdUserAtual { get; set; }
+        public static byte[]? fotoUserAtual { get; set; }
 
         private readonly DataContext _context;
 
@@ -131,8 +135,8 @@ namespace RocketLearning.Controllers
                 {
                     int idUsuario = usuario.Id;
                     UsuarioController.IdUserAtual = usuario.Id;
-                    TempData["idUserAtual"] = usuario.Id;                   
-                    // Senha correta, redirecionar para a Pagina Inicia
+                    TempData["idUserAtual"] = usuario.Id;
+                    RecuperarFoto();
                     return RedirectToAction("PaginaInicial", "Home");
                 }
             }
@@ -141,6 +145,55 @@ namespace RocketLearning.Controllers
             TempData["erroLogin"] = "true";
             return RedirectToAction("Index", "Home");     
         }
+
+        public void RecuperarFoto()
+        {
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == UsuarioController.IdUserAtual);
+
+            var perfilController = new PerfilController(_context);
+        
+            var base64Image = usuario.Foto;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(base64Image))
+                {
+                    PerfilController.fotoUser = base64Image;
+
+
+                    byte[] imageBytes = Convert.FromBase64String(base64Image);
+
+                    // Obtendo o tipo da imagem usando ImageFormat
+                    ImageFormat imageFormat = ImageFormat.Jpeg; // Define um formato padrão
+                    using (MemoryStream ms = new MemoryStream(imageBytes))
+                    {
+                        using (System.Drawing.Image image = System.Drawing.Image.FromStream(ms))
+                        {
+                            imageFormat = image.RawFormat;
+                        }
+                    }
+
+                    // Obtendo a extensão do formato da imagem
+                    string imageExtension = ImageCodecInfo.GetImageEncoders()
+                        .First(codec => codec.FormatID == imageFormat.Guid)
+                        .FilenameExtension
+                        .Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                        .First()
+                        .Trim('*')
+                        .ToLower();
+
+                    // Exibindo o tipo da imagem
+                    Console.WriteLine("Tipo da imagem: " + imageExtension);
+                    PerfilController.tipoImagem = imageExtension;
+                }
+            }
+            catch
+            {
+                PerfilController.fotoUser = null;
+                PerfilController.tipoImagem = null;
+            }         
+        }
+
 
         public  int ObterIdUsuario(int idUsuario)
         {
