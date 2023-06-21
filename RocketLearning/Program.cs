@@ -16,20 +16,12 @@ internal class Program
         builder.Services.AddControllersWithViews();
 
         // CONEXÃO COM O BANCO DE DADOS
-        try{
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection2");
-        builder.Services.AddDbContextPool<DataContext>(options =>
-        options.UseMySql(connectionString2,
-            ServerVersion.AutoDetect(connectionString2)));
-        }
-        catch
-        {
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         builder.Services.AddDbContextPool<DataContext>(options =>
         options.UseMySql(connectionString,
             ServerVersion.AutoDetect(connectionString)));
         //
-        }
+        
         
 
         // YOUTUBE API
