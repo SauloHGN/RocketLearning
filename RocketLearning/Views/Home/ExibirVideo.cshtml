@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Exibir Vídeo";
     var Coments = _context.Comentarios.ToList();
+    bool erroC = Convert.ToBoolean(TempData["erroComentario"] ?? false);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -172,7 +173,19 @@
             </div>
         </div>
     </div>
-    <!---FIM COMENTARIOS->
+    <!---FIM COMENTARIOS-->
+    @if (erroC == true)
+    {
+        <div class="mensagem-erro" id="erroCadastro" style="display: block">
+            Dados incorretos ou já estão sendo usados. Tente Novamente
+        </div>
+    }
+    else
+    {
+        <div class="mensagem-erro" id="erroCadastro" style="display: none">
+            Dados incorretos ou já estão sendo usados. Tente Novamente
+        </div>
+    }
 
 
     <!-- inicio barra lateral  -->
@@ -758,8 +771,33 @@
 
         /*Fim comentarios*/
 
+        /*INICIO MENSAGEM DE ERRO*/
+        .mensagem-erro {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            background-color: #eebec2;
+            border-color: #eebec2;
+            color: #92363f;
+            width: 200px;
+            padding: 2.5px 10px;
+            margin-bottom: 10rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+        }
+
+            .mensagem-erro.visible {
+                display: block;
+            }
+
+            .mensagem-erro.hidden {
+                display: none;
+            }
+        /*FIM MENSAGEM DE ERRO*/
+
     </style>
   </body>
+</html>
 
 <!-- INICIO ATUALIZAR COMENTARIOS -->
 <script>
@@ -851,12 +889,5 @@
     });
 
 </script>
-<!--- FIM ATUALIZAR COMENTARIOS ->
-
-
-
-
-</html>
-
-    
+<!--- FIM ATUALIZAR COMENTARIOS -->
 

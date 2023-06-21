@@ -36,13 +36,6 @@ namespace RocketLearning.Models
 
                 var playlistItemsResponse = playlistItemsRequest.Execute();
 
-                foreach (var playlistItem in playlistItemsResponse.Items)
-                {
-                    Debug.WriteLine("\n");
-                    Debug.WriteLine("Título: " + playlistItem.Snippet.Title);
-                    Debug.WriteLine("Descrição: " + playlistItem.Snippet.Description);
-                    Debug.WriteLine("\n");
-                }
             }
             catch (Exception ex)
             {

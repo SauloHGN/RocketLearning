@@ -6,10 +6,8 @@
     ViewData["Title"] = "Perfil";
     var context = _context;
     var usuario = PerfilController.ObterUsuario(context, UsuarioController.IdUserAtual);
-    var foto = ImageHelper.GetImageFromBase64(usuario.Foto);
-    var extensaoFoto = ImageHelper.GetMimeType(usuario.Foto);
-    ViewData["FotoUsuario"] = foto;
-    ViewData["ExtensaoFoto"] = extensaoFoto;
+    //ViewData["FotoUsuario"] = foto;
+    //ViewData["ExtensaoFoto"] = extensaoFoto;
 }
 <!DOCTYPE html>
 <html lang="en">

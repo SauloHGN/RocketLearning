@@ -28,6 +28,7 @@ namespace RocketLearning.Controllers
         [Route("/Comentario/Create")]
         public IActionResult Create(Comentario comentario, string idVideo)
         {
+
             //lógica para criar um novo comentário no banco de dados
             int autorID = UsuarioController.IdUserAtual;
             string videoID = idVideo;
@@ -43,8 +44,12 @@ namespace RocketLearning.Controllers
             string data = dataAtual.ToString("dd/MM/yy");
 
             if(string.IsNullOrEmpty(text))
+            {            
+                return Content("<script>window.location.reload();</script>", "text/html");
+            }
+            else if(text.Length >= 250)
             {
-                throw new ArgumentException("O campo de comentario não pode estár vazio", nameof(text));
+                return Content("<script>window.location.reload();</script>", "text/html");
             }
 
             comentario.AutorID = autorID;
