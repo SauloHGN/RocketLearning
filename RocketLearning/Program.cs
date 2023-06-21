@@ -15,12 +15,22 @@ internal class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
-        // CONEX√O COM O BANCO DE DADOS
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        // CONEX√ÉO COM O BANCO DE DADOS
+        try{
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection2");
+        builder.Services.AddDbContextPool<DataContext>(options =>
+        options.UseMySql(connectionString2,
+            ServerVersion.AutoDetect(connectionString2)));
+        }
+        catch
+        {
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         builder.Services.AddDbContextPool<DataContext>(options =>
         options.UseMySql(connectionString,
             ServerVersion.AutoDetect(connectionString)));
         //
+        }
+        
 
         // YOUTUBE API
         builder.Configuration.AddJsonFile("appsettings.json");
