@@ -18,6 +18,6 @@ O projeto foi desenvolvido para a disciplina de Programação Orientada a Objeto
      
 
 ### Autores
-• Pedro Lucas Grundler<br />
+• [Pedro Lucas Grundler](https://github.com/pEdrolgdcm)<br />
 • João Paulo Caetano<br />
-• Saulo Guedes
+• [Saulo Guedes](https://github.com/SauloHGN)
