@@ -1,4 +1,4 @@
-### Descrição do Projeto 
+### 🚀 Descrição do Projeto 
 <p align="justify">
 O projeto foi desenvolvido para a disciplina de Programação Orientada a Objetos no 3.º semestre do curso de Análise e Desenvolvimento de Sistemas. O software consiste em um site simples e ainda (inacabado) de vídeos de conteúdos educativos desenvolvido em ASP.NET Core.
  
