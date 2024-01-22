@@ -1,6 +1,14 @@
 ### 🚀 Descrição do Projeto 
 <p align="justify">
 O projeto foi desenvolvido para a disciplina de Programação Orientada a Objetos no 3.º semestre do curso de Análise e Desenvolvimento de Sistemas. O software consiste em um site simples e ainda (inacabado) de vídeos de conteúdos educativos desenvolvido em ASP.NET Core.
+
+### Preview
+
+![Sem título](https://github.com/SauloHGN/RocketLearning/assets/100096259/c3ab947d-d0f0-4cd7-82d2-6abb60dbe7cc)
+
+
+
+
  
 ### 🛠️ Ferramentas Utilizadas 
 <div style="display: inline_block" alt="linguagens"><br>
@@ -17,9 +25,8 @@ O projeto foi desenvolvido para a disciplina de Programação Orientada a Objeto
 </div>
  
 
-     
 
 ### Autores
-• [Pedro Lucas Grundler](https://github.com/pEdrolgdcm)<br />
-• João Paulo Caetano<br />
-• [Saulo Guedes](https://github.com/SauloHGN)
+| [<img src="https://avatars.githubusercontent.com/u/88466085?v=4" width=115><br><sub>Pedro Grundler</sub>](https://github.com/pEdrolgdcm) | [<img src="" width=115><br><sub>João Paulo Caetano</sub>]() |[<img src="https://avatars.githubusercontent.com/u/100096259?v=4" width=115><br><sub>Saulo Guedes</sub>](https://github.com/SauloHGN) |
+| :---: | :---: | :---: |
+
